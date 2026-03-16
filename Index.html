@@ -1,1 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
 
+<meta charset="UTF-8">
+<title>1 Year With You ❤️</title>
+
+<style>
+
+body{
+font-family: Arial;
+background: linear-gradient(to bottom right,#ffe6f0,#fff5f8);
+text-align:center;
+margin:0;
+padding:0;
+}
+
+.container{
+padding:40px;
+max-width:700px;
+margin:auto;
+}
+
+h1{
+color:#e91e63;
+}
+
+button{
+background:#e91e63;
+color:white;
+border:none;
+padding:12px 20px;
+font-size:16px;
+border-radius:8px;
+cursor:pointer;
+margin-top:15px;
+}
+
+input{
+padding:10px;
+font-size:16px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+.memory{
+margin-top:20px;
+display:none;
+}
+
+.memory img, video{
+max-width:100%;
+border-radius:15px;
+margin-top:15px;
+box-shadow:0 10px 20px rgba(0,0,0,0.2);
+}
+
+.progress{
+width:100%;
+background:#eee;
+border-radius:20px;
+overflow:hidden;
+margin:20px 0;
+}
+
+.bar{
+height:20px;
+width:0%;
+background:#e91e63;
+transition:0.5s;
+}
+
+.hidden{
+display:none;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>1 Year With You ❤️</h1>
+
+<div class="progress">
+<div class="bar" id="progressBar"></div>
+</div>
+
+<div id="startScreen">
+
+<p>Our adventure begins...</p>
+
+<button onclick="startGame()">Start</button>
+
+</div>
+
+<div id="gameArea" class="hidden">
+
+<h2 id="clueText"></h2>
+
+<div id="passwordArea">
+
+<p>Enter the password from the envelope:</p>
+
+<input id="passwordInput">
+<button onclick="checkPassword()">Unlock Memory</button>
+
+</div>
+
+<div class="memory" id="memoryArea">
+
+<h3>Memory Unlocked ❤️</h3>
+
+<p id="memoryText"></p>
+
+<div id="mediaArea"></div>
+
+<div id="questionArea">
+
+<p id="questionText"></p>
+
+<input id="answerInput">
+<button onclick="checkAnswer()">Submit</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="finalScreen" class="hidden">
+
+<h2>You unlocked all our memories ❤️</h2>
+
+<p>Follow the lights to your final destination.</p>
+
+<p>Tonight we celebrate us.</p>
+
+</div>
+
+</div>
+
+<script>
+
+let step = 0
+
+const steps = [
+
+{
+clue:
+"Clue 1: Where waves kiss the sand and we watched the sun rise together.",
+password:"sunrise",
+memory:"Our first New Year sunrise together ❤️",
+media:'<img src="sunrise.jpg">',
+question:"What colour was the sky that morning?",
+answer:"pink"
+},
+
+{
+clue:
+"Clue 2: Where four wheels take us on adventures.",
+password:"roadtrip",
+memory:"One of our favourite road trips ❤️",
+media:'<img src="car.jpg">',
+question:"What snack do we always bring?",
+answer:"chips"
+},
+
+{
+clue:
+"Clue 3: Where we soar above the trees.",
+password:"zipline",
+memory:"Our crazy zipline adventure!",
+media:'<video controls><source src="zipline.mp4" type="video/mp4"></video>',
+question:"Who screamed louder?",
+answer:"you"
+}
+
+]
+
+function startGame(){
+
+document.getElementById("startScreen").classList.add("hidden")
+
+document.getElementById("gameArea").classList.remove("hidden")
+
+loadStep()
+
+}
+
+function loadStep(){
+
+document.getElementById("memoryArea").style.display="none"
+
+document.getElementById("passwordInput").value=""
+
+document.getElementById("answerInput").value=""
+
+document.getElementById("clueText").innerText=steps[step].clue
+
+}
+
+function checkPassword(){
+
+let input=document.getElementById("passwordInput").value.toLowerCase()
+
+if(input===steps[step].password){
+
+document.getElementById("memoryArea").style.display="block"
+
+document.getElementById("memoryText").innerText=steps[step].memory
+
+document.getElementById("mediaArea").innerHTML=steps[step].media
+
+document.getElementById("questionText").innerText=steps[step].question
+
+}
+
+else{
+
+alert("Wrong password ❤️")
+
+}
+
+}
+
+function checkAnswer(){
+
+let input=document.getElementById("answerInput").value.toLowerCase()
+
+if(input===steps[step].answer){
+
+step++
+
+updateProgress()
+
+if(step>=steps.length){
+
+document.getElementById("gameArea").classList.add("hidden")
+
+document.getElementById("finalScreen").classList.remove("hidden")
+
+}
+
+else{
+
+loadStep()
+
+}
+
+}
+
+else{
+
+alert("Try again ❤️")
+
+}
+
+}
+
+function updateProgress(){
+
+let percent=(step/steps.length)*100
+
+document.getElementById("progressBar").style.width=percent+"%"
+
+}
+
+</script>
+
+</body>
+
+</html>
