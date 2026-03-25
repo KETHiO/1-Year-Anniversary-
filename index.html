@@ -96,11 +96,18 @@ margin-top:20px;
 <div class="bar" id="progressBar"></div>
 </div>
 
-<div id="startScreen">
+<!-- FIRST SCREEN -->
+<div id="startScreen" class="card">
 
-<p>Our adventure begins...</p>
+<h2>Enter Password</h2>
 
-<button onclick="startGame()">Start</button>
+<p>
+Solve the riddle to begin our adventure ❤️
+</p>
+
+<input id="startPassword">
+<br>
+<button onclick="checkStart()">Unlock First Clue</button>
 
 </div>
 
@@ -158,11 +165,13 @@ margin-top:20px;
 
 let step = 0
 
+const startPassword = "love" // 🔥 CHANGE THIS TO YOUR RIDDLE ANSWER
+
 const steps = [
 
 {
 clue:
-"Clue 1: Where waves kiss the sand and we watched the sun rise together.",
+"Clue 1: Your first envelope is hidden where our story truly began.",
 password:"sunrise",
 memory:"Our first New Year sunrise together ❤️",
 media:'<img src="sunrise.jpg">',
@@ -192,13 +201,22 @@ answer:"you"
 
 ]
 
-function startGame(){
+function checkStart(){
+
+let input=document.getElementById("startPassword").value.toLowerCase()
+
+if(input===startPassword){
 
 document.getElementById("startScreen").classList.add("hidden")
-
 document.getElementById("gameArea").classList.remove("hidden")
 
 loadStep()
+
+}else{
+
+alert("Not quite… think carefully ❤️")
+
+}
 
 }
 
@@ -207,7 +225,6 @@ function loadStep(){
 document.getElementById("memoryArea").style.display="none"
 
 document.getElementById("passwordInput").value=""
-
 document.getElementById("answerInput").value=""
 
 document.getElementById("clueText").innerText=steps[step].clue
@@ -251,7 +268,6 @@ updateProgress()
 if(step>=steps.length){
 
 document.getElementById("gameArea").classList.add("hidden")
-
 document.getElementById("finalScreen").classList.remove("hidden")
 
 }
@@ -275,7 +291,6 @@ alert("Try again ❤️")
 function updateProgress(){
 
 let percent=(step/steps.length)*100
-
 document.getElementById("progressBar").style.width=percent+"%"
 
 }
