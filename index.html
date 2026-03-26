@@ -15,7 +15,7 @@ color:#f5f5f5;
 overflow:hidden;
 }
 
-/* PARTICLE LAYER (NEW FIX) */
+/* PARTICLE LAYER */
 #particles{
 position:fixed;
 top:0;
@@ -26,24 +26,23 @@ z-index:0;
 pointer-events:none;
 }
 
-/* CONTAINER */
+/* CONTAINER (FIXED CENTERING) */
 .container{
 position:relative;
 z-index:2;
-height:100vh;
+min-height:100vh;
 display:flex;
 flex-direction:column;
+justify-content:center; /* FIXED */
 align-items:center;
-padding-top:12vh;
-padding-left:5vw;
-padding-right:5vw;
+padding:20px;
 text-align:center;
 }
 
 /* TITLE */
 h1{
 font-size:24px;
-margin-bottom:2vh;
+margin-bottom:10px;
 color:#ff6fa5;
 }
 
@@ -53,12 +52,12 @@ background:#1a3b2a;
 padding:20px;
 border-radius:16px;
 box-shadow:0 10px 30px rgba(0,0,0,0.5);
-margin-top:2vh;
+margin-top:15px;
 width:100%;
 max-width:400px;
 }
 
-/* INPUT GROUP (CENTER FIX) */
+/* INPUT GROUP */
 .inputGroup{
 display:flex;
 flex-direction:column;
@@ -74,7 +73,7 @@ border-radius:10px;
 border:none;
 width:85%;
 max-width:280px;
-margin-top:1.5vh;
+margin-top:12px;
 text-align:center;
 }
 
@@ -87,7 +86,7 @@ padding:14px;
 font-size:16px;
 border-radius:10px;
 cursor:pointer;
-margin-top:1.5vh;
+margin-top:12px;
 width:85%;
 max-width:280px;
 }
@@ -99,7 +98,7 @@ max-width:400px;
 background:#1a3b2a;
 border-radius:20px;
 overflow:hidden;
-margin-bottom:1.5vh;
+margin-bottom:10px;
 }
 .bar{
 height:16px;
@@ -117,11 +116,10 @@ border-radius:50%;
 opacity:0.7;
 animation:floatUp linear infinite;
 }
-
 @keyframes floatUp{
-0%{transform:translateY(100vh); opacity:0;}
+0%{transform:translateY(100vh);opacity:0;}
 20%{opacity:0.7;}
-100%{transform:translateY(-10vh); opacity:0;}
+100%{transform:translateY(-10vh);opacity:0;}
 }
 
 /* CONFETTI */
@@ -150,7 +148,7 @@ to{box-shadow:0 0 50px rgba(255,105,180,0.9);}
 
 #letter{
 white-space:pre-line;
-margin-top:2vh;
+margin-top:15px;
 }
 
 </style>
@@ -158,7 +156,6 @@ margin-top:2vh;
 
 <body>
 
-<!-- PARTICLES CONTAINER -->
 <div id="particles"></div>
 
 <div class="container">
@@ -171,38 +168,34 @@ margin-top:2vh;
 
 <p id="progressText">0% complete</p>
 
+<!-- START -->
 <div id="startScreen" class="card">
 <h2>Enter Password</h2>
-
 <div class="inputGroup">
 <input id="startPassword">
 <button onclick="checkStart()">Start</button>
 </div>
-
 </div>
 
+<!-- GAME -->
 <div id="gameArea" class="hidden">
-
 <div class="card">
 <h2 id="clueText"></h2>
 </div>
 
 <div class="card">
 <p>Enter the password from the envelope:</p>
-
 <div class="inputGroup">
 <input id="passwordInput">
 <button onclick="checkPassword()">Next</button>
 </div>
-
+</div>
 </div>
 
-</div>
-
+<!-- FINAL -->
 <div id="finalScreen" class="hidden card">
 <h2>You made it ❤️</h2>
 <p>Follow the lights… your final surprise is waiting 🌙</p>
-
 <button onclick="showLetter()">Open your letter ❤️</button>
 
 <div id="letter" class="hidden">
@@ -212,7 +205,6 @@ One year with you has been the most beautiful journey of my life.
 
 I love you ❤️
 </div>
-
 </div>
 
 </div>
@@ -223,15 +215,14 @@ I love you ❤️
 
 <script>
 
-/* PARTICLES FIXED */
-const particleContainer = document.getElementById("particles")
-
+/* PARTICLES */
+const container = document.getElementById("particles")
 for(let i=0;i<40;i++){
 let p=document.createElement("div")
 p.className="particle"
 p.style.left=Math.random()*100+"vw"
 p.style.animationDuration=(6+Math.random()*8)+"s"
-particleContainer.appendChild(p)
+container.appendChild(p)
 }
 
 /* GAME */
