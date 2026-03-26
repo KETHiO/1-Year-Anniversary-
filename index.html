@@ -13,22 +13,45 @@ text-align:center;
 margin:0;
 padding:0;
 color:#f5f5f5;
-overflow-x:hidden;
+overflow:hidden;
 }
 
+/* FLOATING PARTICLES */
+.particle{
+position:fixed;
+width:6px;
+height:6px;
+background:#ff6fa5;
+border-radius:50%;
+opacity:0.6;
+animation:floatUp linear infinite;
+}
+
+@keyframes floatUp{
+from{
+transform:translateY(100vh);
+opacity:0;
+}
+to{
+transform:translateY(-10vh);
+opacity:0.8;
+}
+}
+
+/* BACKGROUND GLOW */
 body::before{
 content:"";
 position:fixed;
 width:200%;
 height:200%;
-background:radial-gradient(circle at 30% 30%, rgba(255,105,180,0.1), transparent);
-animation:moveGlow 10s infinite alternate;
+background:radial-gradient(circle at 30% 30%, rgba(255,105,180,0.15), transparent);
+animation:moveGlow 12s infinite alternate;
 z-index:-1;
 }
 
 @keyframes moveGlow{
 0%{transform:translate(0,0);}
-100%{transform:translate(-100px,-100px);}
+100%{transform:translate(-120px,-120px);}
 }
 
 .container{
@@ -102,15 +125,6 @@ font-size:14px;
 opacity:0.9;
 }
 
-.fade{
-animation:fadeIn 0.5s ease;
-}
-
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(10px);}
-to{opacity:1; transform:translateY(0);}
-}
-
 .hidden{
 display:none;
 }
@@ -130,7 +144,7 @@ animation:finalGlow 2s infinite alternate;
 
 <body>
 
-<div class="container fade">
+<div class="container">
 
 <h1>1 Year With You ❤️</h1>
 
@@ -142,8 +156,7 @@ animation:finalGlow 2s infinite alternate;
 0% complete • Step 1 of 4
 </div>
 
-<!-- START -->
-<div id="startScreen" class="card fade">
+<div id="startScreen" class="card">
 
 <h2>Enter Password</h2>
 <p>Solve the riddle to begin ❤️</p>
@@ -154,14 +167,13 @@ animation:finalGlow 2s infinite alternate;
 
 </div>
 
-<!-- GAME -->
 <div id="gameArea" class="hidden">
 
-<div class="card fade" id="clueCard">
+<div class="card">
 <h2 id="clueText"></h2>
 </div>
 
-<div class="card fade">
+<div class="card">
 <p>Enter the password from the envelope:</p>
 
 <input id="passwordInput">
@@ -171,8 +183,7 @@ animation:finalGlow 2s infinite alternate;
 
 </div>
 
-<!-- FINAL -->
-<div id="finalScreen" class="hidden card fade">
+<div id="finalScreen" class="hidden card">
 
 <h2>You made it ❤️</h2>
 
@@ -180,10 +191,28 @@ animation:finalGlow 2s infinite alternate;
 
 </div>
 
-</div>
-
 <script>
 
+// PARTICLES
+function createParticles(){
+
+for(let i=0;i<25;i++){
+
+let p=document.createElement("div")
+p.className="particle"
+
+p.style.left=Math.random()*100+"vw"
+p.style.animationDuration=(5+Math.random()*10)+"s"
+p.style.opacity=Math.random()
+
+document.body.appendChild(p)
+}
+
+}
+
+createParticles()
+
+// GAME LOGIC (UNCHANGED)
 const startPassword = "crazysams"
 
 const steps = [
@@ -224,11 +253,11 @@ let input=document.getElementById("startPassword").value.toLowerCase()
 
 if(input===startPassword){
 
-fadeOut("startScreen", () => {
+document.getElementById("startScreen").classList.add("hidden")
 document.getElementById("gameArea").classList.remove("hidden")
+
 loadStep()
 updateProgress()
-})
 
 }else{
 alert("Not quite… ❤️")
@@ -254,9 +283,8 @@ updateProgress()
 
 if(step>=steps.length){
 
-fadeOut("gameArea", () => {
+document.getElementById("gameArea").classList.add("hidden")
 document.getElementById("finalScreen").classList.remove("hidden")
-})
 
 }else{
 loadStep()
@@ -276,25 +304,6 @@ document.getElementById("progressBar").style.width=percent+"%"
 
 document.getElementById("progressText").innerText =
 percent + "% complete • Step " + (step+1) + " of " + steps.length
-
-}
-
-function fadeOut(id, callback){
-
-let el=document.getElementById(id)
-let opacity=1
-
-let fade=setInterval(()=>{
-opacity-=0.1
-el.style.opacity=opacity
-
-if(opacity<=0){
-clearInterval(fade)
-el.classList.add("hidden")
-el.style.opacity=1
-callback()
-}
-},30)
 
 }
 
