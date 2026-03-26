@@ -16,6 +16,16 @@ color:#f5f5f5;
 overflow:hidden;
 }
 
+/* BACKGROUND GLOW */
+body::before{
+content:"";
+position:fixed;
+width:200%;
+height:200%;
+background:radial-gradient(circle at 30% 30%, rgba(255,105,180,0.08), transparent);
+z-index:-1;
+}
+
 /* CONTAINER */
 .container{
 width:100%;
@@ -25,32 +35,16 @@ flex-direction:column;
 justify-content:center;
 align-items:center;
 padding:20px;
-box-sizing:border-box;
 text-align:center;
 }
 
-/* FADE IN */
+/* FADE */
 .fade{
 animation:fadeIn 0.8s ease;
 }
 @keyframes fadeIn{
 from{opacity:0; transform:translateY(20px);}
 to{opacity:1; transform:translateY(0);}
-}
-
-/* PARTICLES */
-.particle{
-position:fixed;
-width:6px;
-height:6px;
-background:#ff6fa5;
-border-radius:50%;
-opacity:0.6;
-animation:floatUp linear infinite;
-}
-@keyframes floatUp{
-from{transform:translateY(100vh);}
-to{transform:translateY(-10vh);}
 }
 
 /* CARD */
@@ -62,16 +56,23 @@ box-shadow:0 10px 30px rgba(0,0,0,0.6);
 margin-top:15px;
 width:100%;
 max-width:500px;
+position:relative;
+z-index:2;
 }
 
 /* INPUT */
 input{
 padding:14px;
 font-size:16px;
-border-radius:8px;
+border-radius:10px;
 border:none;
-width:100%;
+width:80%;
+max-width:300px;
 margin-top:10px;
+text-align:center;
+display:block;
+margin-left:auto;
+margin-right:auto;
 }
 
 /* BUTTON */
@@ -81,13 +82,18 @@ color:white;
 border:none;
 padding:14px;
 font-size:16px;
-border-radius:8px;
+border-radius:10px;
 cursor:pointer;
 margin-top:10px;
-width:100%;
+width:80%;
+max-width:300px;
+display:block;
+margin-left:auto;
+margin-right:auto;
+transition:0.2s;
 }
 button:hover{background:#ff4081;}
-button:active{transform:scale(0.95);}
+button:active{transform:scale(0.9);}
 
 /* PROGRESS */
 .progress{
@@ -105,8 +111,34 @@ background:linear-gradient(90deg,#ff6fa5,#ff4081);
 transition:0.5s;
 }
 
-/* HIDDEN */
-.hidden{display:none;}
+/* PARTICLES */
+.particle{
+position:fixed;
+width:6px;
+height:6px;
+background:#ff6fa5;
+border-radius:50%;
+opacity:0.6;
+animation:floatUp linear infinite;
+z-index:0;
+pointer-events:none;
+}
+@keyframes floatUp{
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);}
+}
+
+/* CONFETTI */
+.confetti{
+position:fixed;
+width:8px;
+height:8px;
+top:0;
+animation:fall 3s linear forwards;
+}
+@keyframes fall{
+to{transform:translateY(100vh);}
+}
 
 /* FINAL GLOW */
 #finalScreen{
@@ -114,7 +146,15 @@ animation:glow 2s infinite alternate;
 }
 @keyframes glow{
 from{box-shadow:0 0 20px rgba(255,105,180,0.4);}
-to{box-shadow:0 0 50px rgba(255,105,180,0.8);}
+to{box-shadow:0 0 50px rgba(255,105,180,0.9);}
+}
+
+/* HIDDEN */
+.hidden{display:none;}
+
+#letter{
+white-space:pre-line;
+margin-top:15px;
 }
 
 </style>
@@ -158,18 +198,43 @@ to{box-shadow:0 0 50px rgba(255,105,180,0.8);}
 <div id="finalScreen" class="hidden card fade">
 <h2>You made it ❤️</h2>
 <p>Follow the lights… your final surprise is waiting 🌙</p>
+
+<button onclick="showLetter()">Open your letter ❤️</button>
+
+<div id="letter" class="hidden">
+My love,
+
+One year with you has been the most beautiful journey of my life.
+
+Every laugh, every moment, every memory we created means everything to me.
+
+Today wasn’t just about finding clues…
+It was about reliving us.
+
+And now…
+this is where it all leads.
+
+I love you ❤️
 </div>
 
 </div>
+
+</div>
+
+<!-- MUSIC -->
+<audio id="music" loop>
+<source src="YOUR-MUSIC.mp3" type="audio/mpeg">
+</audio>
 
 <script>
 
 /* PARTICLES */
-for(let i=0;i<25;i++){
+for(let i=0;i<30;i++){
 let p=document.createElement("div")
 p.className="particle"
 p.style.left=Math.random()*100+"vw"
-p.style.animationDuration=(5+Math.random()*10)+"s"
+p.style.animationDuration=(6+Math.random()*8)+"s"
+p.style.opacity=0.3 + Math.random()*0.5
 document.body.appendChild(p)
 }
 
@@ -178,28 +243,31 @@ const startPassword = "crazysams"
 
 /* STEPS */
 const steps = [
-
-{clue:"Where water met us for the very first time 🌊", password:"firstswim"},
-{clue:"Back to the place of chaos and fun 😏", password:"04/04/25"},
-{clue:"A place of salt, but not the ocean 🌿", password:"29/03/25"},
-{clue:"Where something small meant everything ❤️", password:"firsthug"},
-{clue:"Where music moved us together 💃", password:"firstdance"},
-{clue:"Where laughter met the sky 😄", password:"playground"},
-{clue:"Where adventure sits parked 🚗", password:"jimny"},
-{clue:"A place that holds what we built 🛠️", password:"shed"},
-{clue:"Where the sunrise began a new chapter 🌅", password:"newyearsunrise"},
-{clue:"Safety first… but love always comes first 🧰", password:"emergencykit"},
-{clue:"One more stop before the end 🎲", password:"uno"},
-{clue:"Your final step awaits… ❤️", password:"final"} // last given by you
+{clue:"Where water met us 🌊", password:"firstswim"},
+{clue:"Back to chaos 😏", password:"04/04/25"},
+{clue:"Salt but not sea 🌿", password:"29/03/25"},
+{clue:"Where it meant everything ❤️", password:"firsthug"},
+{clue:"Where we danced 💃", password:"firstdance"},
+{clue:"Where laughter lives 😄", password:"playground"},
+{clue:"Parked adventure 🚗", password:"jimny"},
+{clue:"What we built 🛠️", password:"shed"},
+{clue:"Where the year began 🌅", password:"newyearsunrise"},
+{clue:"Safety first 🧰", password:"emergencykit"},
+{clue:"One last game 🎲", password:"uno"},
+{clue:"Final step ❤️", password:"final"}
 ]
 
 let step = 0
 
 function checkStart(){
 let val = document.getElementById("startPassword").value.toLowerCase()
+
 if(val===startPassword){
 document.getElementById("startScreen").classList.add("hidden")
 document.getElementById("gameArea").classList.remove("hidden")
+
+document.getElementById("music").play()
+
 loadStep()
 updateProgress()
 }else{
@@ -215,14 +283,14 @@ document.getElementById("clueText").innerText = steps[step].clue
 function checkPassword(){
 let val = document.getElementById("passwordInput").value.toLowerCase()
 
-if(val === steps[step].password){
+if(val===steps[step].password){
 step++
-
 updateProgress()
 
-if(step >= steps.length){
+if(step>=steps.length){
 document.getElementById("gameArea").classList.add("hidden")
 document.getElementById("finalScreen").classList.remove("hidden")
+launchConfetti()
 }else{
 loadStep()
 }
@@ -235,6 +303,23 @@ function updateProgress(){
 let percent = Math.floor((step/steps.length)*100)
 document.getElementById("progressBar").style.width = percent + "%"
 document.getElementById("progressText").innerText = percent + "% complete"
+}
+
+/* CONFETTI */
+function launchConfetti(){
+for(let i=0;i<60;i++){
+let c=document.createElement("div")
+c.className="confetti"
+c.style.left=Math.random()*100+"vw"
+c.style.background=`hsl(${Math.random()*360},100%,50%)`
+c.style.animationDuration=(2+Math.random()*2)+"s"
+document.body.appendChild(c)
+}
+}
+
+/* LETTER */
+function showLetter(){
+document.getElementById("letter").classList.remove("hidden")
 }
 
 </script>
