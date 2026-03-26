@@ -16,7 +16,7 @@ color:#f5f5f5;
 overflow:hidden;
 }
 
-/* FULL SCREEN CONTAINER */
+/* CONTAINER */
 .container{
 width:100%;
 min-height:100vh;
@@ -29,7 +29,16 @@ box-sizing:border-box;
 text-align:center;
 }
 
-/* FLOATING PARTICLES */
+/* FADE IN */
+.fade{
+animation:fadeIn 0.8s ease;
+}
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(20px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+/* PARTICLES */
 .particle{
 position:fixed;
 width:6px;
@@ -39,32 +48,9 @@ border-radius:50%;
 opacity:0.6;
 animation:floatUp linear infinite;
 }
-
 @keyframes floatUp{
-from{transform:translateY(100vh);opacity:0;}
-to{transform:translateY(-10vh);opacity:0.8;}
-}
-
-/* BACKGROUND GLOW */
-body::before{
-content:"";
-position:fixed;
-width:200%;
-height:200%;
-background:radial-gradient(circle at 30% 30%, rgba(255,105,180,0.15), transparent);
-animation:moveGlow 12s infinite alternate;
-z-index:-1;
-}
-
-@keyframes moveGlow{
-0%{transform:translate(0,0);}
-100%{transform:translate(-120px,-120px);}
-}
-
-/* TITLE */
-h1{
-color:#ff6fa5;
-margin-bottom:10px;
+from{transform:translateY(100vh);}
+to{transform:translateY(-10vh);}
 }
 
 /* CARD */
@@ -78,15 +64,6 @@ width:100%;
 max-width:500px;
 }
 
-/* INPUT GROUP */
-.inputGroup{
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:10px;
-margin-top:10px;
-}
-
 /* INPUT */
 input{
 padding:14px;
@@ -94,7 +71,7 @@ font-size:16px;
 border-radius:8px;
 border:none;
 width:100%;
-max-width:350px;
+margin-top:10px;
 }
 
 /* BUTTON */
@@ -102,20 +79,15 @@ button{
 background:#e91e63;
 color:white;
 border:none;
-padding:14px 20px;
+padding:14px;
 font-size:16px;
 border-radius:8px;
 cursor:pointer;
-transition:0.2s;
+margin-top:10px;
 width:100%;
-max-width:350px;
 }
-
+button:hover{background:#ff4081;}
 button:active{transform:scale(0.95);}
-button:hover{
-background:#ff4081;
-transform:scale(1.05);
-}
 
 /* PROGRESS */
 .progress{
@@ -124,37 +96,25 @@ max-width:500px;
 background:#1a3b2a;
 border-radius:20px;
 overflow:hidden;
-margin:10px 0;
+margin-bottom:10px;
 }
-
 .bar{
 height:20px;
 width:0%;
 background:linear-gradient(90deg,#ff6fa5,#ff4081);
-box-shadow:0 0 15px #ff6fa5;
-transition:0.6s;
-}
-
-.progressText{
-font-size:14px;
-opacity:0.9;
-margin-bottom:10px;
+transition:0.5s;
 }
 
 /* HIDDEN */
-.hidden{
-display:none;
-}
+.hidden{display:none;}
 
 /* FINAL GLOW */
 #finalScreen{
-box-shadow:0 0 40px rgba(255,105,180,0.6);
-animation:finalGlow 2s infinite alternate;
+animation:glow 2s infinite alternate;
 }
-
-@keyframes finalGlow{
-0%{box-shadow:0 0 20px rgba(255,105,180,0.4);}
-100%{box-shadow:0 0 50px rgba(255,105,180,0.8);}
+@keyframes glow{
+from{box-shadow:0 0 20px rgba(255,105,180,0.4);}
+to{box-shadow:0 0 50px rgba(255,105,180,0.8);}
 }
 
 </style>
@@ -170,142 +130,111 @@ animation:finalGlow 2s infinite alternate;
 <div class="bar" id="progressBar"></div>
 </div>
 
-<div class="progressText" id="progressText">
-0% complete • Step 1 of 4
-</div>
+<p id="progressText">0% complete</p>
 
 <!-- START -->
-<div id="startScreen" class="card">
-
+<div id="startScreen" class="card fade">
 <h2>Enter Password</h2>
-<p>Solve the riddle to begin ❤️</p>
-
-<div class="inputGroup">
 <input id="startPassword">
 <button onclick="checkStart()">Start</button>
-</div>
-
 </div>
 
 <!-- GAME -->
 <div id="gameArea" class="hidden">
 
-<div class="card">
+<div class="card fade">
 <h2 id="clueText"></h2>
 </div>
 
-<div class="card">
-
+<div class="card fade">
 <p>Enter the password from the envelope:</p>
-
-<div class="inputGroup">
 <input id="passwordInput">
-<button onclick="checkPassword()">Next Clue</button>
-</div>
-
+<button onclick="checkPassword()">Next</button>
 </div>
 
 </div>
 
 <!-- FINAL -->
-<div id="finalScreen" class="hidden card">
-
+<div id="finalScreen" class="hidden card fade">
 <h2>You made it ❤️</h2>
-
 <p>Follow the lights… your final surprise is waiting 🌙</p>
-
 </div>
 
 </div>
 
 <script>
 
-// PARTICLES
-function createParticles(){
+/* PARTICLES */
 for(let i=0;i<25;i++){
 let p=document.createElement("div")
 p.className="particle"
 p.style.left=Math.random()*100+"vw"
 p.style.animationDuration=(5+Math.random()*10)+"s"
-p.style.opacity=Math.random()
 document.body.appendChild(p)
 }
-}
-createParticles()
 
-// GAME
+/* START PASSWORD */
 const startPassword = "crazysams"
 
+/* STEPS */
 const steps = [
 
-{
-clue:`Where water met us for the very first time,
-Where laughter echoed and the sun felt like it was ours.`,
-password:"firstswim"
-},
-
-{
-clue:`From waves to thrills, we chased the rush,
-Where chaos lives and fun never rests.`,
-password:"crazysams"
-},
-
-{
-clue:`Salt in the air, but not from the sea,
-A place we shared something simple, just you and me.`,
-password:"seasalt"
-},
-
-{
-clue:`Not where we met,
-Not where we played,
-But where something quiet
-Meant everything.`,
-password:"firsthug"
-}
-
+{clue:"Where water met us for the very first time 🌊", password:"firstswim"},
+{clue:"Back to the place of chaos and fun 😏", password:"04/04/25"},
+{clue:"A place of salt, but not the ocean 🌿", password:"29/03/25"},
+{clue:"Where something small meant everything ❤️", password:"firsthug"},
+{clue:"Where music moved us together 💃", password:"firstdance"},
+{clue:"Where laughter met the sky 😄", password:"playground"},
+{clue:"Where adventure sits parked 🚗", password:"jimny"},
+{clue:"A place that holds what we built 🛠️", password:"shed"},
+{clue:"Where the sunrise began a new chapter 🌅", password:"newyearsunrise"},
+{clue:"Safety first… but love always comes first 🧰", password:"emergencykit"},
+{clue:"One more stop before the end 🎲", password:"uno"},
+{clue:"Your final step awaits… ❤️", password:"final"} // last given by you
 ]
 
 let step = 0
 
 function checkStart(){
-let input=document.getElementById("startPassword").value.toLowerCase()
-if(input===startPassword){
+let val = document.getElementById("startPassword").value.toLowerCase()
+if(val===startPassword){
 document.getElementById("startScreen").classList.add("hidden")
 document.getElementById("gameArea").classList.remove("hidden")
 loadStep()
 updateProgress()
 }else{
-alert("Not quite… ❤️")
+alert("Try again ❤️")
 }
 }
 
 function loadStep(){
 document.getElementById("passwordInput").value=""
-document.getElementById("clueText").innerText=steps[step].clue
+document.getElementById("clueText").innerText = steps[step].clue
 }
 
 function checkPassword(){
-let input=document.getElementById("passwordInput").value.toLowerCase()
-if(input===steps[step].password){
+let val = document.getElementById("passwordInput").value.toLowerCase()
+
+if(val === steps[step].password){
 step++
+
 updateProgress()
-if(step>=steps.length){
+
+if(step >= steps.length){
 document.getElementById("gameArea").classList.add("hidden")
 document.getElementById("finalScreen").classList.remove("hidden")
 }else{
 loadStep()
 }
 }else{
-alert("Wrong password ❤️")
+alert("Try again ❤️")
 }
 }
 
 function updateProgress(){
-let percent=Math.floor((step/steps.length)*100)
-document.getElementById("progressBar").style.width=percent+"%"
-document.getElementById("progressText").innerText =
-percent + "% complete • Step " + (step+1) + " of " + steps.length
+let percent = Math.floor((step/steps.length)*100)
+document.getElementById("progressBar").style.width = percent + "%"
+document.getElementById("progressText").innerText = percent + "% complete"
 }
 
 </script>
