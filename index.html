@@ -9,11 +9,23 @@
 body{
 font-family: Arial;
 background: linear-gradient(135deg,#0f2f1f,#1e4d2b);
-text-align:center;
 margin:0;
 padding:0;
 color:#f5f5f5;
 overflow:hidden;
+
+display:flex;
+justify-content:center;
+align-items:center;
+min-height:100vh;
+}
+
+/* MAIN WRAPPER CENTER */
+.container{
+width:100%;
+max-width:700px;
+padding:20px;
+text-align:center;
 }
 
 /* FLOATING PARTICLES */
@@ -28,14 +40,8 @@ animation:floatUp linear infinite;
 }
 
 @keyframes floatUp{
-from{
-transform:translateY(100vh);
-opacity:0;
-}
-to{
-transform:translateY(-10vh);
-opacity:0.8;
-}
+from{transform:translateY(100vh);opacity:0;}
+to{transform:translateY(-10vh);opacity:0.8;}
 }
 
 /* BACKGROUND GLOW */
@@ -54,15 +60,10 @@ z-index:-1;
 100%{transform:translate(-120px,-120px);}
 }
 
-/* CONTAINER */
-.container{
-padding:40px;
-max-width:700px;
-margin:auto;
-}
-
+/* TITLE */
 h1{
 color:#ff6fa5;
+margin-bottom:10px;
 }
 
 /* CARD */
@@ -74,12 +75,11 @@ box-shadow:0 10px 30px rgba(0,0,0,0.6);
 margin-top:20px;
 }
 
-/* INPUT GROUP (NEW CENTERING FIX) */
+/* INPUT GROUP */
 .inputGroup{
 display:flex;
 flex-direction:column;
 align-items:center;
-justify-content:center;
 gap:10px;
 margin-top:10px;
 }
@@ -92,7 +92,6 @@ border-radius:8px;
 border:none;
 width:80%;
 max-width:300px;
-margin-top:5px;
 }
 
 /* BUTTON */
@@ -104,26 +103,22 @@ padding:12px 20px;
 font-size:16px;
 border-radius:8px;
 cursor:pointer;
-margin-top:5px;
 transition:0.2s;
 }
 
-button:active{
-transform:scale(0.95);
-}
-
+button:active{transform:scale(0.95);}
 button:hover{
 background:#ff4081;
 transform:scale(1.05);
 }
 
-/* PROGRESS BAR */
+/* PROGRESS */
 .progress{
 width:100%;
 background:#1a3b2a;
 border-radius:20px;
 overflow:hidden;
-margin:20px 0;
+margin:15px 0;
 }
 
 .bar{
@@ -135,7 +130,6 @@ transition:0.6s;
 }
 
 .progressText{
-margin-top:10px;
 font-size:14px;
 opacity:0.9;
 }
@@ -145,7 +139,7 @@ opacity:0.9;
 display:none;
 }
 
-/* FINAL SCREEN GLOW */
+/* FINAL GLOW */
 #finalScreen{
 box-shadow:0 0 40px rgba(255,105,180,0.6);
 animation:finalGlow 2s infinite alternate;
@@ -180,8 +174,8 @@ animation:finalGlow 2s infinite alternate;
 <p>Solve the riddle to begin ❤️</p>
 
 <div class="inputGroup">
-  <input id="startPassword">
-  <button onclick="checkStart()">Start</button>
+<input id="startPassword">
+<button onclick="checkStart()">Start</button>
 </div>
 
 </div>
@@ -194,11 +188,12 @@ animation:finalGlow 2s infinite alternate;
 </div>
 
 <div class="card">
+
 <p>Enter the password from the envelope:</p>
 
 <div class="inputGroup">
-  <input id="passwordInput">
-  <button onclick="checkPassword()">Next Clue</button>
+<input id="passwordInput">
+<button onclick="checkPassword()">Next Clue</button>
 </div>
 
 </div>
@@ -231,7 +226,7 @@ document.body.appendChild(p)
 }
 createParticles()
 
-// GAME LOGIC
+// GAME
 const startPassword = "crazysams"
 
 const steps = [
@@ -267,63 +262,43 @@ password:"firsthug"
 let step = 0
 
 function checkStart(){
-
 let input=document.getElementById("startPassword").value.toLowerCase()
-
 if(input===startPassword){
-
 document.getElementById("startScreen").classList.add("hidden")
 document.getElementById("gameArea").classList.remove("hidden")
-
 loadStep()
 updateProgress()
-
 }else{
 alert("Not quite… ❤️")
 }
-
 }
 
 function loadStep(){
-
 document.getElementById("passwordInput").value=""
 document.getElementById("clueText").innerText=steps[step].clue
-
 }
 
 function checkPassword(){
-
 let input=document.getElementById("passwordInput").value.toLowerCase()
-
 if(input===steps[step].password){
-
 step++
 updateProgress()
-
 if(step>=steps.length){
-
 document.getElementById("gameArea").classList.add("hidden")
 document.getElementById("finalScreen").classList.remove("hidden")
-
 }else{
 loadStep()
 }
-
 }else{
 alert("Wrong password ❤️")
 }
-
 }
 
 function updateProgress(){
-
 let percent=Math.floor((step/steps.length)*100)
-
 document.getElementById("progressBar").style.width=percent+"%"
-
 document.getElementById("progressText").innerText =
 percent + "% complete • Step " + (step+1) + " of " + steps.length
-
 }
 
 </script>
