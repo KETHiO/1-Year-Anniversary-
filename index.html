@@ -14,65 +14,71 @@ margin:0;
 padding:0;
 color:#f5f5f5;
 overflow:hidden;
+position:relative;
 }
 
-/* BACKGROUND GLOW */
+/* BACKGROUND */
 body::before{
 content:"";
 position:fixed;
 width:200%;
 height:200%;
 background:radial-gradient(circle at 30% 30%, rgba(255,105,180,0.08), transparent);
-z-index:-1;
+z-index:-2;
 }
 
 /* CONTAINER */
 .container{
+position:relative;
+z-index:2;
 width:100%;
 min-height:100vh;
 display:flex;
 flex-direction:column;
 justify-content:center;
 align-items:center;
-padding:20px;
+padding:25px;
 text-align:center;
 }
 
-/* FADE */
-.fade{
-animation:fadeIn 0.8s ease;
-}
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(20px);}
-to{opacity:1; transform:translateY(0);}
+/* TITLE */
+h1{
+font-size:32px;
+margin-bottom:10px;
+color:#ff6fa5;
 }
 
 /* CARD */
 .card{
 background:#1a3b2a;
-padding:25px;
-border-radius:15px;
-box-shadow:0 10px 30px rgba(0,0,0,0.6);
-margin-top:15px;
+padding:30px;
+border-radius:18px;
+box-shadow:0 12px 35px rgba(0,0,0,0.6);
+margin-top:20px;
 width:100%;
-max-width:500px;
-position:relative;
-z-index:2;
+max-width:550px;
+z-index:3;
+}
+
+/* TEXT */
+h2{
+font-size:22px;
+}
+
+p{
+font-size:16px;
 }
 
 /* INPUT */
 input{
-padding:14px;
-font-size:16px;
-border-radius:10px;
+padding:16px;
+font-size:18px;
+border-radius:12px;
 border:none;
-width:80%;
-max-width:300px;
-margin-top:10px;
+width:85%;
+max-width:350px;
+margin-top:15px;
 text-align:center;
-display:block;
-margin-left:auto;
-margin-right:auto;
 }
 
 /* BUTTON */
@@ -80,73 +86,69 @@ button{
 background:#e91e63;
 color:white;
 border:none;
-padding:14px;
-font-size:16px;
-border-radius:10px;
+padding:16px;
+font-size:18px;
+border-radius:12px;
 cursor:pointer;
-margin-top:10px;
-width:80%;
-max-width:300px;
-display:block;
-margin-left:auto;
-margin-right:auto;
-transition:0.2s;
+margin-top:15px;
+width:85%;
+max-width:350px;
 }
 button:hover{background:#ff4081;}
-button:active{transform:scale(0.9);}
+button:active{transform:scale(0.92);}
 
 /* PROGRESS */
 .progress{
 width:100%;
-max-width:500px;
+max-width:550px;
 background:#1a3b2a;
-border-radius:20px;
+border-radius:25px;
 overflow:hidden;
-margin-bottom:10px;
+margin-bottom:15px;
 }
 .bar{
-height:20px;
+height:24px;
 width:0%;
 background:linear-gradient(90deg,#ff6fa5,#ff4081);
-transition:0.5s;
 }
 
 /* PARTICLES */
 .particle{
 position:fixed;
-width:6px;
-height:6px;
+width:7px;
+height:7px;
 background:#ff6fa5;
 border-radius:50%;
-opacity:0.6;
+opacity:0.7;
 animation:floatUp linear infinite;
-z-index:0;
-pointer-events:none;
+z-index:1;
 }
 @keyframes floatUp{
-from{transform:translateY(100vh);}
-to{transform:translateY(-10vh);}
+0%{transform:translateY(100vh); opacity:0;}
+20%{opacity:0.7;}
+100%{transform:translateY(-10vh); opacity:0;}
 }
 
 /* CONFETTI */
 .confetti{
 position:fixed;
-width:8px;
-height:8px;
+width:10px;
+height:10px;
 top:0;
 animation:fall 3s linear forwards;
+z-index:5;
 }
 @keyframes fall{
 to{transform:translateY(100vh);}
 }
 
-/* FINAL GLOW */
+/* FINAL */
 #finalScreen{
 animation:glow 2s infinite alternate;
 }
 @keyframes glow{
-from{box-shadow:0 0 20px rgba(255,105,180,0.4);}
-to{box-shadow:0 0 50px rgba(255,105,180,0.9);}
+from{box-shadow:0 0 25px rgba(255,105,180,0.4);}
+to{box-shadow:0 0 60px rgba(255,105,180,0.9);}
 }
 
 /* HIDDEN */
@@ -154,7 +156,8 @@ to{box-shadow:0 0 50px rgba(255,105,180,0.9);}
 
 #letter{
 white-space:pre-line;
-margin-top:15px;
+margin-top:20px;
+font-size:16px;
 }
 
 </style>
@@ -172,21 +175,19 @@ margin-top:15px;
 
 <p id="progressText">0% complete</p>
 
-<!-- START -->
-<div id="startScreen" class="card fade">
+<div id="startScreen" class="card">
 <h2>Enter Password</h2>
 <input id="startPassword">
 <button onclick="checkStart()">Start</button>
 </div>
 
-<!-- GAME -->
 <div id="gameArea" class="hidden">
 
-<div class="card fade">
+<div class="card">
 <h2 id="clueText"></h2>
 </div>
 
-<div class="card fade">
+<div class="card">
 <p>Enter the password from the envelope:</p>
 <input id="passwordInput">
 <button onclick="checkPassword()">Next</button>
@@ -194,8 +195,7 @@ margin-top:15px;
 
 </div>
 
-<!-- FINAL -->
-<div id="finalScreen" class="hidden card fade">
+<div id="finalScreen" class="hidden card">
 <h2>You made it ❤️</h2>
 <p>Follow the lights… your final surprise is waiting 🌙</p>
 
@@ -206,14 +206,6 @@ My love,
 
 One year with you has been the most beautiful journey of my life.
 
-Every laugh, every moment, every memory we created means everything to me.
-
-Today wasn’t just about finding clues…
-It was about reliving us.
-
-And now…
-this is where it all leads.
-
 I love you ❤️
 </div>
 
@@ -221,7 +213,6 @@ I love you ❤️
 
 </div>
 
-<!-- MUSIC -->
 <audio id="music" loop>
 <source src="YOUR-MUSIC.mp3" type="audio/mpeg">
 </audio>
@@ -229,19 +220,17 @@ I love you ❤️
 <script>
 
 /* PARTICLES */
-for(let i=0;i<30;i++){
+for(let i=0;i<40;i++){
 let p=document.createElement("div")
 p.className="particle"
 p.style.left=Math.random()*100+"vw"
-p.style.animationDuration=(6+Math.random()*8)+"s"
-p.style.opacity=0.3 + Math.random()*0.5
+p.style.animationDuration=(6+Math.random()*10)+"s"
 document.body.appendChild(p)
 }
 
-/* START PASSWORD */
+/* GAME */
 const startPassword = "crazysams"
 
-/* STEPS */
 const steps = [
 {clue:"Where water met us 🌊", password:"firstswim"},
 {clue:"Back to chaos 😏", password:"04/04/25"},
@@ -260,14 +249,11 @@ const steps = [
 let step = 0
 
 function checkStart(){
-let val = document.getElementById("startPassword").value.toLowerCase()
-
+let val=document.getElementById("startPassword").value.toLowerCase()
 if(val===startPassword){
 document.getElementById("startScreen").classList.add("hidden")
 document.getElementById("gameArea").classList.remove("hidden")
-
 document.getElementById("music").play()
-
 loadStep()
 updateProgress()
 }else{
@@ -277,16 +263,14 @@ alert("Try again ❤️")
 
 function loadStep(){
 document.getElementById("passwordInput").value=""
-document.getElementById("clueText").innerText = steps[step].clue
+document.getElementById("clueText").innerText=steps[step].clue
 }
 
 function checkPassword(){
-let val = document.getElementById("passwordInput").value.toLowerCase()
-
+let val=document.getElementById("passwordInput").value.toLowerCase()
 if(val===steps[step].password){
 step++
 updateProgress()
-
 if(step>=steps.length){
 document.getElementById("gameArea").classList.add("hidden")
 document.getElementById("finalScreen").classList.remove("hidden")
@@ -300,24 +284,21 @@ alert("Try again ❤️")
 }
 
 function updateProgress(){
-let percent = Math.floor((step/steps.length)*100)
-document.getElementById("progressBar").style.width = percent + "%"
-document.getElementById("progressText").innerText = percent + "% complete"
+let percent=Math.floor((step/steps.length)*100)
+document.getElementById("progressBar").style.width=percent+"%"
+document.getElementById("progressText").innerText=percent+"% complete"
 }
 
-/* CONFETTI */
 function launchConfetti(){
 for(let i=0;i<60;i++){
 let c=document.createElement("div")
 c.className="confetti"
 c.style.left=Math.random()*100+"vw"
 c.style.background=`hsl(${Math.random()*360},100%,50%)`
-c.style.animationDuration=(2+Math.random()*2)+"s"
 document.body.appendChild(c)
 }
 }
 
-/* LETTER */
 function showLetter(){
 document.getElementById("letter").classList.remove("hidden")
 }
