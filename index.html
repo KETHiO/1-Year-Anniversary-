@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
 <title>1 Year With You ❤️</title>
 
@@ -14,6 +13,17 @@ text-align:center;
 margin:0;
 padding:0;
 color:#f5f5f5;
+overflow-x:hidden;
+}
+
+/* FADE ANIMATION */
+.fade{
+animation:fadeIn 0.6s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
 }
 
 .container{
@@ -26,6 +36,17 @@ h1{
 color:#ff6fa5;
 }
 
+/* INPUT + BUTTON IMPROVEMENTS */
+input{
+padding:12px;
+font-size:16px;
+border-radius:8px;
+border:none;
+width:80%;
+max-width:300px;
+margin-top:10px;
+}
+
 button{
 background:#e91e63;
 color:white;
@@ -35,27 +56,24 @@ font-size:16px;
 border-radius:8px;
 cursor:pointer;
 margin-top:15px;
+transition:0.2s;
 }
 
-input{
-padding:10px;
-font-size:16px;
-border-radius:6px;
-border:none;
+button:hover{
+transform:scale(1.05);
+background:#ff4081;
 }
 
-.memory{
-margin-top:20px;
-display:none;
-}
-
-.memory img, video{
-max-width:100%;
+/* CARD UI */
+.card{
+background:#1a3b2a;
+padding:25px;
 border-radius:15px;
-margin-top:15px;
 box-shadow:0 10px 25px rgba(0,0,0,0.5);
+margin-top:20px;
 }
 
+/* PROGRESS BAR */
 .progress{
 width:100%;
 background:#1a3b2a;
@@ -71,16 +89,9 @@ background:#ff6fa5;
 transition:0.5s;
 }
 
+/* HIDDEN */
 .hidden{
 display:none;
-}
-
-.card{
-background:#1a3b2a;
-padding:20px;
-border-radius:12px;
-box-shadow:0 5px 15px rgba(0,0,0,0.4);
-margin-top:20px;
 }
 
 </style>
@@ -88,7 +99,7 @@ margin-top:20px;
 
 <body>
 
-<div class="container">
+<div class="container fade">
 
 <h1>1 Year With You ❤️</h1>
 
@@ -96,66 +107,51 @@ margin-top:20px;
 <div class="bar" id="progressBar"></div>
 </div>
 
-<!-- FIRST SCREEN -->
-<div id="startScreen" class="card">
+<!-- START SCREEN -->
+<div id="startScreen" class="card fade">
 
 <h2>Enter Password</h2>
-
-<p>
-Solve the riddle to begin our adventure ❤️
-</p>
+<p>Solve the riddle to begin ❤️</p>
 
 <input id="startPassword">
 <br>
-<button onclick="checkStart()">Unlock First Clue</button>
+<button onclick="checkStart()">Start</button>
 
 </div>
 
+<!-- GAME -->
 <div id="gameArea" class="hidden">
 
-<div class="card">
+<div class="card fade">
 <h2 id="clueText"></h2>
 </div>
 
-<div id="passwordArea" class="card">
-
+<div class="card fade">
 <p>Enter the password from the envelope:</p>
 
 <input id="passwordInput">
 <br>
-<button onclick="checkPassword()">Unlock Memory</button>
-
+<button onclick="checkPassword()">Unlock</button>
 </div>
 
-<div class="memory card" id="memoryArea">
-
-<h3>Memory Unlocked ❤️</h3>
-
-<p id="memoryText"></p>
-
-<div id="mediaArea"></div>
-
-<div id="questionArea">
+<div id="questionArea" class="card hidden fade">
 
 <p id="questionText"></p>
 
 <input id="answerInput">
 <br>
-<button onclick="checkAnswer()">Submit</button>
+<button onclick="checkAnswer()">Continue</button>
 
 </div>
 
 </div>
 
-</div>
+<!-- FINAL -->
+<div id="finalScreen" class="hidden card fade">
 
-<div id="finalScreen" class="hidden card">
+<h2>You made it ❤️</h2>
 
-<h2>You unlocked all our memories ❤️</h2>
-
-<p>Follow the lights to your final destination.</p>
-
-<p>Tonight we celebrate us.</p>
+<p>Follow the lights… your final surprise is waiting 🌙</p>
 
 </div>
 
@@ -163,43 +159,50 @@ Solve the riddle to begin our adventure ❤️
 
 <script>
 
-let step = 0
+// START PASSWORD
+const startPassword = "crazysams"
 
-const startPassword = "love" // 🔥 CHANGE THIS TO YOUR RIDDLE ANSWER
-
+// STEPS (YOU CAN EXPAND THESE)
 const steps = [
 
 {
-clue:
-"Clue 1: Your first envelope is hidden where our story truly began.",
-password:"sunrise",
-memory:"Our first New Year sunrise together ❤️",
-media:'<img src="sunrise.jpg">',
-question:"What colour was the sky that morning?",
-answer:"pink"
+clue:`Where water met us for the very first time,
+Where laughter echoed and the sun felt like it was ours.`,
+password:"firstswim",
+question:"What colour was the sky that day?",
+answer:["pink","orange","sunset"]
 },
 
 {
-clue:
-"Clue 2: Where four wheels take us on adventures.",
-password:"roadtrip",
-memory:"One of our favourite road trips ❤️",
-media:'<img src="car.jpg">',
-question:"What snack do we always bring?",
-answer:"chips"
+clue:`From waves to thrills, we chased the rush,
+Where chaos lives and fun never rests.`,
+password:"crazysams",
+question:"What game did we laugh the most playing?",
+answer:["arcade","basketball","racing"]
 },
 
 {
-clue:
-"Clue 3: Where we soar above the trees.",
-password:"zipline",
-memory:"Our crazy zipline adventure!",
-media:'<video controls><source src="zipline.mp4" type="video/mp4"></video>',
-question:"Who screamed louder?",
-answer:"you"
+clue:`Salt in the air, but not from the sea,
+A place we shared something simple, just you and me.`,
+password:"seasalt",
+question:"What did we eat there?",
+answer:["chips","burger","fries"]
+},
+
+{
+clue:`Not where we met,
+Not where we played,
+But where something quiet
+Meant everything.`,
+password:"firsthug",
+question:"Who hugged first?",
+answer:["me","you"]
 }
 
 ]
+
+// GAME STATE
+let step = 0
 
 function checkStart(){
 
@@ -207,14 +210,14 @@ let input=document.getElementById("startPassword").value.toLowerCase()
 
 if(input===startPassword){
 
-document.getElementById("startScreen").classList.add("hidden")
+fadeOut("startScreen", () => {
 document.getElementById("gameArea").classList.remove("hidden")
-
 loadStep()
+})
 
 }else{
 
-alert("Not quite… think carefully ❤️")
+alert("Not quite… ❤️")
 
 }
 
@@ -222,8 +225,7 @@ alert("Not quite… think carefully ❤️")
 
 function loadStep(){
 
-document.getElementById("memoryArea").style.display="none"
-
+document.getElementById("questionArea").classList.add("hidden")
 document.getElementById("passwordInput").value=""
 document.getElementById("answerInput").value=""
 
@@ -237,17 +239,10 @@ let input=document.getElementById("passwordInput").value.toLowerCase()
 
 if(input===steps[step].password){
 
-document.getElementById("memoryArea").style.display="block"
-
-document.getElementById("memoryText").innerText=steps[step].memory
-
-document.getElementById("mediaArea").innerHTML=steps[step].media
-
+document.getElementById("questionArea").classList.remove("hidden")
 document.getElementById("questionText").innerText=steps[step].question
 
-}
-
-else{
+}else{
 
 alert("Wrong password ❤️")
 
@@ -259,28 +254,24 @@ function checkAnswer(){
 
 let input=document.getElementById("answerInput").value.toLowerCase()
 
-if(input===steps[step].answer){
+if(steps[step].answer.includes(input)){
 
 step++
-
 updateProgress()
 
 if(step>=steps.length){
 
-document.getElementById("gameArea").classList.add("hidden")
+fadeOut("gameArea", () => {
 document.getElementById("finalScreen").classList.remove("hidden")
+})
 
-}
-
-else{
+}else{
 
 loadStep()
 
 }
 
-}
-
-else{
+}else{
 
 alert("Try again ❤️")
 
@@ -295,8 +286,26 @@ document.getElementById("progressBar").style.width=percent+"%"
 
 }
 
+/* FADE OUT FUNCTION */
+function fadeOut(id, callback){
+
+let el = document.getElementById(id)
+el.style.opacity = 1
+
+let fade = setInterval(() => {
+if(el.style.opacity > 0){
+el.style.opacity -= 0.1
+}else{
+clearInterval(fade)
+el.classList.add("hidden")
+el.style.opacity = 1
+callback()
+}
+},30)
+
+}
+
 </script>
 
 </body>
-
 </html>
