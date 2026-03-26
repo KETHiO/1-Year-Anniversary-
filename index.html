@@ -54,6 +54,7 @@ z-index:-1;
 100%{transform:translate(-120px,-120px);}
 }
 
+/* CONTAINER */
 .container{
 padding:40px;
 max-width:700px;
@@ -64,6 +65,7 @@ h1{
 color:#ff6fa5;
 }
 
+/* CARD */
 .card{
 background:#1a3b2a;
 padding:25px;
@@ -72,6 +74,17 @@ box-shadow:0 10px 30px rgba(0,0,0,0.6);
 margin-top:20px;
 }
 
+/* INPUT GROUP (NEW CENTERING FIX) */
+.inputGroup{
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:10px;
+margin-top:10px;
+}
+
+/* INPUT */
 input{
 padding:12px;
 font-size:16px;
@@ -79,9 +92,10 @@ border-radius:8px;
 border:none;
 width:80%;
 max-width:300px;
-margin-top:10px;
+margin-top:5px;
 }
 
+/* BUTTON */
 button{
 background:#e91e63;
 color:white;
@@ -90,7 +104,7 @@ padding:12px 20px;
 font-size:16px;
 border-radius:8px;
 cursor:pointer;
-margin-top:15px;
+margin-top:5px;
 transition:0.2s;
 }
 
@@ -103,6 +117,7 @@ background:#ff4081;
 transform:scale(1.05);
 }
 
+/* PROGRESS BAR */
 .progress{
 width:100%;
 background:#1a3b2a;
@@ -125,10 +140,12 @@ font-size:14px;
 opacity:0.9;
 }
 
+/* HIDDEN */
 .hidden{
 display:none;
 }
 
+/* FINAL SCREEN GLOW */
 #finalScreen{
 box-shadow:0 0 40px rgba(255,105,180,0.6);
 animation:finalGlow 2s infinite alternate;
@@ -156,17 +173,20 @@ animation:finalGlow 2s infinite alternate;
 0% complete • Step 1 of 4
 </div>
 
+<!-- START -->
 <div id="startScreen" class="card">
 
 <h2>Enter Password</h2>
 <p>Solve the riddle to begin ❤️</p>
 
-<input id="startPassword">
-<br>
-<button onclick="checkStart()">Start</button>
+<div class="inputGroup">
+  <input id="startPassword">
+  <button onclick="checkStart()">Start</button>
+</div>
 
 </div>
 
+<!-- GAME -->
 <div id="gameArea" class="hidden">
 
 <div class="card">
@@ -176,13 +196,16 @@ animation:finalGlow 2s infinite alternate;
 <div class="card">
 <p>Enter the password from the envelope:</p>
 
-<input id="passwordInput">
-<br>
-<button onclick="checkPassword()">Next Clue</button>
+<div class="inputGroup">
+  <input id="passwordInput">
+  <button onclick="checkPassword()">Next Clue</button>
 </div>
 
 </div>
 
+</div>
+
+<!-- FINAL -->
 <div id="finalScreen" class="hidden card">
 
 <h2>You made it ❤️</h2>
@@ -191,28 +214,24 @@ animation:finalGlow 2s infinite alternate;
 
 </div>
 
+</div>
+
 <script>
 
 // PARTICLES
 function createParticles(){
-
 for(let i=0;i<25;i++){
-
 let p=document.createElement("div")
 p.className="particle"
-
 p.style.left=Math.random()*100+"vw"
 p.style.animationDuration=(5+Math.random()*10)+"s"
 p.style.opacity=Math.random()
-
 document.body.appendChild(p)
 }
-
 }
-
 createParticles()
 
-// GAME LOGIC (UNCHANGED)
+// GAME LOGIC
 const startPassword = "crazysams"
 
 const steps = [
