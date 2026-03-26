@@ -8,7 +8,7 @@
 
 body{
 font-family: Arial;
-background: linear-gradient(to bottom right,#0f2f1f,#1e4d2b);
+background: linear-gradient(135deg,#0f2f1f,#1e4d2b);
 text-align:center;
 margin:0;
 padding:0;
@@ -16,27 +16,45 @@ color:#f5f5f5;
 overflow-x:hidden;
 }
 
-/* FADE ANIMATION */
-.fade{
-animation:fadeIn 0.6s ease;
+/* BACKGROUND GLOW */
+body::before{
+content:"";
+position:fixed;
+width:200%;
+height:200%;
+background:radial-gradient(circle at 30% 30%, rgba(255,105,180,0.1), transparent);
+animation:moveGlow 10s infinite alternate;
+z-index:-1;
 }
 
-@keyframes fadeIn{
-from{opacity:0; transform:translateY(10px);}
-to{opacity:1; transform:translateY(0);}
+@keyframes moveGlow{
+0%{transform:translate(0,0);}
+100%{transform:translate(-100px,-100px);}
 }
 
+/* CONTAINER */
 .container{
 padding:40px;
 max-width:700px;
 margin:auto;
 }
 
+/* TITLE */
 h1{
 color:#ff6fa5;
 }
 
-/* INPUT + BUTTON IMPROVEMENTS */
+/* CARDS */
+.card{
+background:#1a3b2a;
+padding:25px;
+border-radius:15px;
+box-shadow:0 10px 30px rgba(0,0,0,0.6);
+margin-top:20px;
+transition:0.4s;
+}
+
+/* INPUT */
 input{
 padding:12px;
 font-size:16px;
@@ -47,6 +65,7 @@ max-width:300px;
 margin-top:10px;
 }
 
+/* BUTTON */
 button{
 background:#e91e63;
 color:white;
@@ -59,18 +78,13 @@ margin-top:15px;
 transition:0.2s;
 }
 
-button:hover{
-transform:scale(1.05);
-background:#ff4081;
+button:active{
+transform:scale(0.95);
 }
 
-/* CARD UI */
-.card{
-background:#1a3b2a;
-padding:25px;
-border-radius:15px;
-box-shadow:0 10px 25px rgba(0,0,0,0.5);
-margin-top:20px;
+button:hover{
+background:#ff4081;
+transform:scale(1.05);
 }
 
 /* PROGRESS BAR */
@@ -85,13 +99,40 @@ margin:20px 0;
 .bar{
 height:20px;
 width:0%;
-background:#ff6fa5;
-transition:0.5s;
+background:linear-gradient(90deg,#ff6fa5,#ff4081);
+box-shadow:0 0 15px #ff6fa5;
+transition:0.6s;
 }
 
-/* HIDDEN */
+.progressText{
+margin-top:10px;
+font-size:14px;
+opacity:0.9;
+}
+
+/* FADE */
+.fade{
+animation:fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
 .hidden{
 display:none;
+}
+
+/* FINAL SCREEN GLOW */
+#finalScreen{
+box-shadow:0 0 40px rgba(255,105,180,0.6);
+animation:finalGlow 2s infinite alternate;
+}
+
+@keyframes finalGlow{
+0%{box-shadow:0 0 20px rgba(255,105,180,0.4);}
+100%{box-shadow:0 0 50px rgba(255,105,180,0.8);}
 }
 
 </style>
@@ -107,7 +148,11 @@ display:none;
 <div class="bar" id="progressBar"></div>
 </div>
 
-<!-- START SCREEN -->
+<div class="progressText" id="progressText">
+0% complete • Step 1 of 4
+</div>
+
+<!-- START -->
 <div id="startScreen" class="card fade">
 
 <h2>Enter Password</h2>
@@ -122,7 +167,7 @@ display:none;
 <!-- GAME -->
 <div id="gameArea" class="hidden">
 
-<div class="card fade">
+<div class="card fade" id="clueCard">
 <h2 id="clueText"></h2>
 </div>
 
@@ -159,10 +204,8 @@ display:none;
 
 <script>
 
-// START PASSWORD
 const startPassword = "crazysams"
 
-// STEPS (YOU CAN EXPAND THESE)
 const steps = [
 
 {
@@ -201,7 +244,6 @@ answer:["me","you"]
 
 ]
 
-// GAME STATE
 let step = 0
 
 function checkStart(){
@@ -210,27 +252,32 @@ let input=document.getElementById("startPassword").value.toLowerCase()
 
 if(input===startPassword){
 
+transitionToGame()
+
+}else{
+alert("Not quite… ❤️")
+}
+}
+
+function transitionToGame(){
+
 fadeOut("startScreen", () => {
 document.getElementById("gameArea").classList.remove("hidden")
 loadStep()
+updateProgress()
 })
-
-}else{
-
-alert("Not quite… ❤️")
-
-}
 
 }
 
 function loadStep(){
+
+fadeElement("clueCard")
 
 document.getElementById("questionArea").classList.add("hidden")
 document.getElementById("passwordInput").value=""
 document.getElementById("answerInput").value=""
 
 document.getElementById("clueText").innerText=steps[step].clue
-
 }
 
 function checkPassword(){
@@ -239,15 +286,13 @@ let input=document.getElementById("passwordInput").value.toLowerCase()
 
 if(input===steps[step].password){
 
+fadeElement("questionArea")
 document.getElementById("questionArea").classList.remove("hidden")
 document.getElementById("questionText").innerText=steps[step].question
 
 }else{
-
 alert("Wrong password ❤️")
-
 }
-
 }
 
 function checkAnswer(){
@@ -266,39 +311,47 @@ document.getElementById("finalScreen").classList.remove("hidden")
 })
 
 }else{
-
 loadStep()
-
 }
 
 }else{
-
 alert("Try again ❤️")
-
 }
-
 }
 
 function updateProgress(){
 
-let percent=(step/steps.length)*100
+let percent=Math.floor((step/steps.length)*100)
+
 document.getElementById("progressBar").style.width=percent+"%"
+
+document.getElementById("progressText").innerText =
+percent + "% complete • Step " + (step+1) + " of " + steps.length
 
 }
 
-/* FADE OUT FUNCTION */
+/* ANIMATIONS */
+
+function fadeElement(id){
+let el=document.getElementById(id)
+el.classList.remove("fade")
+void el.offsetWidth
+el.classList.add("fade")
+}
+
 function fadeOut(id, callback){
 
-let el = document.getElementById(id)
-el.style.opacity = 1
+let el=document.getElementById(id)
+let opacity=1
 
-let fade = setInterval(() => {
-if(el.style.opacity > 0){
-el.style.opacity -= 0.1
-}else{
+let fade=setInterval(()=>{
+opacity-=0.1
+el.style.opacity=opacity
+
+if(opacity<=0){
 clearInterval(fade)
 el.classList.add("hidden")
-el.style.opacity = 1
+el.style.opacity=1
 callback()
 }
 },30)
