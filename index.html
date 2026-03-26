@@ -15,7 +15,7 @@ color:#f5f5f5;
 overflow:hidden;
 }
 
-/* PARTICLE LAYER */
+/* PARTICLES */
 #particles{
 position:fixed;
 top:0;
@@ -26,23 +26,28 @@ z-index:0;
 pointer-events:none;
 }
 
-/* CONTAINER (FIXED CENTERING) */
-.container{
+/* MASTER CENTER FIX */
+.wrapper{
 position:relative;
 z-index:2;
-min-height:100vh;
+height:100vh;
 display:flex;
-flex-direction:column;
-justify-content:center; /* FIXED */
+justify-content:center;
 align-items:center;
 padding:20px;
+}
+
+/* CONTENT BLOCK */
+.container{
+width:100%;
+max-width:420px;
 text-align:center;
 }
 
 /* TITLE */
 h1{
-font-size:24px;
-margin-bottom:10px;
+font-size:26px;
+margin-bottom:12px;
 color:#ff6fa5;
 }
 
@@ -50,11 +55,9 @@ color:#ff6fa5;
 .card{
 background:#1a3b2a;
 padding:20px;
-border-radius:16px;
+border-radius:18px;
 box-shadow:0 10px 30px rgba(0,0,0,0.5);
 margin-top:15px;
-width:100%;
-max-width:400px;
 }
 
 /* INPUT GROUP */
@@ -62,18 +65,16 @@ max-width:400px;
 display:flex;
 flex-direction:column;
 align-items:center;
-width:100%;
 }
 
 /* INPUT */
 input{
-padding:14px;
+padding:16px;
 font-size:16px;
-border-radius:10px;
+border-radius:12px;
 border:none;
-width:85%;
-max-width:280px;
-margin-top:12px;
+width:100%;
+max-width:300px;
 text-align:center;
 }
 
@@ -82,19 +83,18 @@ button{
 background:#e91e63;
 color:white;
 border:none;
-padding:14px;
+padding:16px;
 font-size:16px;
-border-radius:10px;
+border-radius:12px;
 cursor:pointer;
 margin-top:12px;
-width:85%;
-max-width:280px;
+width:100%;
+max-width:300px;
 }
 
 /* PROGRESS */
 .progress{
 width:100%;
-max-width:400px;
 background:#1a3b2a;
 border-radius:20px;
 overflow:hidden;
@@ -135,15 +135,6 @@ z-index:5;
 to{transform:translateY(100vh);}
 }
 
-/* FINAL */
-#finalScreen{
-animation:glow 2s infinite alternate;
-}
-@keyframes glow{
-from{box-shadow:0 0 20px rgba(255,105,180,0.4);}
-to{box-shadow:0 0 50px rgba(255,105,180,0.9);}
-}
-
 .hidden{display:none;}
 
 #letter{
@@ -158,6 +149,7 @@ margin-top:15px;
 
 <div id="particles"></div>
 
+<div class="wrapper">
 <div class="container">
 
 <h1>1 Year With You ❤️</h1>
@@ -179,6 +171,7 @@ margin-top:15px;
 
 <!-- GAME -->
 <div id="gameArea" class="hidden">
+
 <div class="card">
 <h2 id="clueText"></h2>
 </div>
@@ -190,12 +183,14 @@ margin-top:15px;
 <button onclick="checkPassword()">Next</button>
 </div>
 </div>
+
 </div>
 
 <!-- FINAL -->
 <div id="finalScreen" class="hidden card">
 <h2>You made it ❤️</h2>
 <p>Follow the lights… your final surprise is waiting 🌙</p>
+
 <button onclick="showLetter()">Open your letter ❤️</button>
 
 <div id="letter" class="hidden">
@@ -203,44 +198,56 @@ My love,
 
 One year with you has been the most beautiful journey of my life.
 
-I love you ❤️
-</div>
+Every laugh, every hug, every moment has meant everything to me.
+
+Tonight is just another reminder of how much I love you ❤️
 </div>
 
 </div>
 
-<audio id="music" loop>
-<source src="YOUR-MUSIC.mp3" type="audio/mpeg">
-</audio>
+</div>
+</div>
 
 <script>
 
 /* PARTICLES */
-const container = document.getElementById("particles")
+const particleContainer = document.getElementById("particles")
 for(let i=0;i<40;i++){
 let p=document.createElement("div")
 p.className="particle"
 p.style.left=Math.random()*100+"vw"
 p.style.animationDuration=(6+Math.random()*8)+"s"
-container.appendChild(p)
+particleContainer.appendChild(p)
 }
 
 /* GAME */
 const startPassword="crazysams"
 
+/* ✨ LONGER CLUES */
 const steps=[
-{clue:"Where water met us 🌊", password:"firstswim"},
-{clue:"Back to chaos 😏", password:"04/04/25"},
-{clue:"Salt but not sea 🌿", password:"29/03/25"},
-{clue:"Where it meant everything ❤️", password:"firsthug"},
-{clue:"Where we danced 💃", password:"firstdance"},
-{clue:"Where laughter lives 😄", password:"playground"},
-{clue:"Parked adventure 🚗", password:"jimny"},
-{clue:"What we built 🛠️", password:"shed"},
-{clue:"Where the year began 🌅", password:"newyearsunrise"},
-{clue:"Safety first 🧰", password:"emergencykit"},
-{clue:"One last game 🎲", password:"uno"},
-{clue:"Final step ❤️", password:"final"}
+{clue:"Think back to a moment where everything felt simple… where the water touched us and time slowed down. Go to the place where we first shared that feeling 🌊", password:"firstswim"},
+
+{clue:"Now go somewhere a little more chaotic… a place that always brings energy, laughter, and a bit of madness. You know exactly where 😏", password:"04/04/25"},
+
+{clue:"This next place isn’t about the ocean, but it still reminds me of the same feeling… something small, something simple, something we shared 🌿", password:"29/03/25"},
+
+{clue:"Go to the place where something shifted… where everything started to feel real. The place I’ll never forget ❤️", password:"firsthug"},
+
+{clue:"Now find the spot where we moved together… where music didn’t matter, and it was just us in the moment 💃", password:"firstdance"},
+
+{clue:"Time for something playful… go to the place where laughter comes easy and nothing feels serious 😄", password:"playground"},
+
+{clue:"Now head to where adventures begin and end… where the journey is just as important as the destination 🚗", password:"jimny"},
+
+{clue:"Think about what we built together… something physical, something we worked on side by side 🛠️", password:"shed"},
+
+{clue:"Go to the place where a new chapter began… where the sky changed and we welcomed something new together 🌅", password:"newyearsunrise"},
+
+{clue:"Now find the place that’s all about being prepared… where safety meets care 🧰", password:"emergencykit"},
+
+{clue:"One more step… something small, something fun, something we’ve shared before 🎲", password:"uno"},
+
+{clue:"You’re almost there… one last step before everything comes together ❤️", password:"final"}
 ]
 
 let step=0
@@ -250,7 +257,6 @@ let val=document.getElementById("startPassword").value.toLowerCase()
 if(val===startPassword){
 document.getElementById("startScreen").classList.add("hidden")
 document.getElementById("gameArea").classList.remove("hidden")
-document.getElementById("music").play()
 loadStep()
 updateProgress()
 }else{
@@ -268,6 +274,7 @@ let val=document.getElementById("passwordInput").value.toLowerCase()
 if(val===steps[step].password){
 step++
 updateProgress()
+
 if(step>=steps.length){
 document.getElementById("gameArea").classList.add("hidden")
 document.getElementById("finalScreen").classList.remove("hidden")
