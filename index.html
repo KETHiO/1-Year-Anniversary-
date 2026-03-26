@@ -8,15 +8,14 @@
 <style>
 
 body{
-font-family: -apple-system, Arial;
-background: linear-gradient(135deg,#0f2f1f,#1e4d2b);
+font-family:-apple-system, Arial;
+background:linear-gradient(135deg,#0f2f1f,#1e4d2b);
 margin:0;
-padding:0;
 color:#f5f5f5;
 overflow:hidden;
 }
 
-/* BACKGROUND */
+/* BACKGROUND GLOW */
 body::before{
 content:"";
 position:fixed;
@@ -26,16 +25,14 @@ background:radial-gradient(circle at 30% 30%, rgba(255,105,180,0.08), transparen
 z-index:-2;
 }
 
-<style>
-
-/* CONTAINER FIX */
+/* CONTAINER (FIXED BALANCE) */
 .container{
 height:100vh;
 display:flex;
 flex-direction:column;
-justify-content:flex-start; /* IMPORTANT CHANGE */
+justify-content:flex-start;
 align-items:center;
-padding-top:12vh; /* pushes content into perfect center zone */
+padding-top:12vh;
 padding-left:5vw;
 padding-right:5vw;
 box-sizing:border-box;
@@ -58,6 +55,7 @@ box-shadow:0 10px 30px rgba(0,0,0,0.5);
 margin-top:2vh;
 width:100%;
 max-width:400px;
+z-index:2;
 }
 
 /* INPUT */
@@ -68,6 +66,7 @@ border-radius:10px;
 border:none;
 width:100%;
 margin-top:1.5vh;
+text-align:center;
 }
 
 /* BUTTON */
@@ -82,6 +81,7 @@ cursor:pointer;
 margin-top:1.5vh;
 width:100%;
 }
+button:active{transform:scale(0.95);}
 
 /* PROGRESS */
 .progress{
@@ -97,8 +97,8 @@ height:16px;
 width:0%;
 background:linear-gradient(90deg,#ff6fa5,#ff4081);
 }
-  
-/* PARTICLES */
+
+/* PARTICLES (FIXED) */
 .particle{
 position:fixed;
 width:6px;
@@ -108,11 +108,12 @@ border-radius:50%;
 opacity:0.6;
 animation:floatUp linear infinite;
 z-index:1;
+pointer-events:none;
 }
 @keyframes floatUp{
-0%{transform:translateY(100vh); opacity:0;}
+0%{transform:translateY(100vh);opacity:0;}
 20%{opacity:0.7;}
-100%{transform:translateY(-10vh); opacity:0;}
+100%{transform:translateY(-10vh);opacity:0;}
 }
 
 /* CONFETTI */
@@ -161,12 +162,14 @@ font-size:14px;
 
 <p id="progressText">0% complete</p>
 
+<!-- START -->
 <div id="startScreen" class="card">
 <h2>Enter Password</h2>
 <input id="startPassword">
 <button onclick="checkStart()">Start</button>
 </div>
 
+<!-- GAME -->
 <div id="gameArea" class="hidden">
 
 <div class="card">
@@ -181,6 +184,7 @@ font-size:14px;
 
 </div>
 
+<!-- FINAL -->
 <div id="finalScreen" class="hidden card">
 <h2>You made it ❤️</h2>
 <p>Follow the lights… your final surprise is waiting 🌙</p>
@@ -192,6 +196,14 @@ My love,
 
 One year with you has been the most beautiful journey of my life.
 
+Every laugh, every moment, every memory we created means everything to me.
+
+Today wasn’t just about finding clues…
+It was about reliving us.
+
+And now…
+this is where it all leads.
+
 I love you ❤️
 </div>
 
@@ -199,6 +211,7 @@ I love you ❤️
 
 </div>
 
+<!-- MUSIC -->
 <audio id="music" loop>
 <source src="YOUR-MUSIC.mp3" type="audio/mpeg">
 </audio>
