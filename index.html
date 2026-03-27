@@ -6,7 +6,6 @@
 <title>1 Year With You ❤️</title>
 
 <style>
-/* (UNCHANGED — YOUR EXACT STYLES KEPT) */
 body{
 font-family:-apple-system, Arial;
 background:linear-gradient(135deg,#0f2f1f,#1e4d2b);
@@ -56,32 +55,159 @@ color:white;
 font-size:16px;
 }
 
-.fadeOut{animation:fadeOut 1s forwards;}
-@keyframes fadeOut{to{opacity:0;}}
+.fadeOut{
+animation:fadeOut 1s forwards;
+}
+@keyframes fadeOut{
+to{opacity:0;}
+}
 
-/* (ALL YOUR ORIGINAL CSS CONTINUES UNCHANGED...) */
+/* PARTICLES */
+#particles{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+pointer-events:none;
+}
+
+.wrapper{
+position:relative;
+z-index:2;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.container{
+width:100%;
+max-width:420px;
+text-align:center;
+}
+
+h1{
+font-size:26px;
+margin-bottom:12px;
+color:#ff6fa5;
+}
+
+.card{
+background:#1a3b2a;
+padding:20px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+margin-top:15px;
+animation:floatCard 4s ease-in-out infinite;
+}
+
+@keyframes floatCard{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-4px);}
+100%{transform:translateY(0px);}
+}
+
+.inputGroup{
+display:flex;
+flex-direction:column;
+align-items:center;
+}
+
+input{
+padding:16px;
+font-size:16px;
+border-radius:12px;
+border:none;
+width:100%;
+max-width:300px;
+text-align:center;
+}
+
+button{
+background:#e91e63;
+color:white;
+border:none;
+padding:16px;
+font-size:16px;
+border-radius:12px;
+cursor:pointer;
+margin-top:12px;
+width:100%;
+max-width:300px;
+}
+button:active{
+transform:scale(0.95);
+}
+
+.progress{
+width:100%;
+background:#1a3b2a;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:10px;
+}
+.bar{
+height:16px;
+width:0%;
+background:linear-gradient(90deg,#ff6fa5,#ff4081);
+}
+
+.particle{
+position:fixed;
+width:6px;
+height:6px;
+background:#ff6fa5;
+border-radius:50%;
+opacity:0.7;
+animation:floatUp linear infinite;
+z-index:1;
+}
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:0;}
+20%{opacity:0.7;}
+100%{transform:translateY(-10vh);opacity:0;}
+}
+
+.confetti{
+position:fixed;
+width:8px;
+height:8px;
+top:0;
+animation:fall 3s linear forwards;
+z-index:5;
+}
+@keyframes fall{
+to{transform:translateY(100vh);}
+}
+
+.fade{
+animation:fadeIn 0.5s ease;
+}
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+.correct{
+box-shadow:0 0 20px #ff6fa5;
+transition:0.3s;
+}
 
 .hidden{display:none;}
 
-/* ADMIN PANEL */
-#adminPanel{
-position:fixed;
-bottom:10px;
-left:50%;
-transform:translateX(-50%);
-background:#000;
-padding:15px;
-border-radius:12px;
-z-index:30;
-width:90%;
-max-width:320px;
+#letter{
+white-space:pre-line;
+margin-top:15px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- INTRO (UNCHANGED) -->
+<!-- INTRO -->
 <div id="introScreen">
   <div class="introContent">
     <h2 id="introText">
@@ -100,7 +226,7 @@ max-width:320px;
 <div class="wrapper">
 <div class="container">
 
-<h1 onclick="tapAdmin()">1 Year With You ❤️</h1>
+<h1>1 Year With You ❤️</h1>
 
 <div class="progress">
 <div class="bar" id="progressBar"></div>
@@ -132,6 +258,7 @@ max-width:320px;
 
 </div>
 
+<!-- 🔥 NEW PAUSE SCREEN -->
 <div id="pauseScreen" class="hidden card">
 <h2>You’ve made it this far ❤️</h2>
 <p>But this isn’t the end…</p>
@@ -160,32 +287,15 @@ Every laugh, every hug, every moment has meant everything to me.
 
 Tonight is just another reminder of how much I love you ❤️
 </div>
-</div>
 
 </div>
+
 </div>
-
-<!-- ADMIN PANEL -->
-<div id="adminPanel" class="hidden">
-<h3>Admin 🔒</h3>
-
-<input id="adminStep" placeholder="Step (0-11)">
-<button onclick="goToStep()">Go To Step</button>
-
-<hr>
-
-<input id="editClue" placeholder="Edit current clue">
-<input id="editPassword" placeholder="Edit current password">
-
-<button onclick="saveEdit()">Save Changes</button>
-
-<button onclick="resetApp()">Reset</button>
-<button onclick="forceFinal()">Force Final</button>
 </div>
 
 <script>
 
-/* INTRO (UNCHANGED) */
+/* INTRO */
 function startApp(){
 localStorage.setItem("introSeen","true")
 const intro=document.getElementById("introScreen")
@@ -193,53 +303,20 @@ intro.classList.add("fadeOut")
 setTimeout(()=>{intro.style.display="none"},1000)
 }
 
-/* ADMIN TAP */
-let adminTaps=0
-function tapAdmin(){
-adminTaps++
-if(adminTaps>=5){
-document.getElementById("adminPanel").classList.remove("hidden")
-adminTaps=0
-}
-setTimeout(()=>{adminTaps=0},2000)
-}
-
-/* EDIT FUNCTION (NEW ONLY) */
-function saveEdit(){
-let newClue=document.getElementById("editClue").value
-let newPass=document.getElementById("editPassword").value
-
-if(newClue){
-steps[step].clue=newClue
-}
-if(newPass){
-steps[step].password=newPass.toLowerCase()
+/* PARTICLES */
+const particleContainer=document.getElementById("particles")
+for(let i=0;i<40;i++){
+let p=document.createElement("div")
+p.className="particle"
+p.style.left=Math.random()*100+"vw"
+p.style.animationDuration=(6+Math.random()*8)+"s"
+particleContainer.appendChild(p)
 }
 
-loadStep()
-alert("Updated ✅")
-}
+/* GAME */
+const startPassword="crazy sams"
+const finalPassword="tonight" // 🔥 CHANGE THIS WHEN READY
 
-/* ADMIN NAV */
-function goToStep(){
-let val=parseInt(document.getElementById("adminStep").value)
-if(!isNaN(val) && val>=0 && val<steps.length){
-step=val
-localStorage.setItem("anniversaryStep",step)
-document.getElementById("startScreen").classList.add("hidden")
-document.getElementById("gameArea").classList.remove("hidden")
-loadStep()
-updateProgress()
-}
-}
-
-function forceFinal(){
-document.getElementById("gameArea").classList.add("hidden")
-document.getElementById("pauseScreen").classList.add("hidden")
-document.getElementById("finalScreen").classList.remove("hidden")
-}
-
-/* YOUR ORIGINAL STEPS (UNCHANGED) */
 const steps=[
 {clue:"Think back to a moment where everything felt simple… where the water touched us and time slowed down. Go to the place where we first shared that feeling", password:"april4th"},
 {clue:"Not our first hello, but definitely not our last moment together either. Find the place where we stopped talking and did something better", password:"march29th"},
@@ -257,7 +334,118 @@ const steps=[
 
 let step=0
 
-/* ALL YOUR ORIGINAL LOGIC CONTINUES UNCHANGED BELOW */
+/* LOAD SAVE */
+const savedStep=localStorage.getItem("anniversaryStep")
+// ALWAYS SHOW INTRO (for testing)
+document.getElementById("introScreen").style.display="flex"
+
+if(savedStep!==null){
+step=parseInt(savedStep)
+document.getElementById("startScreen").classList.add("hidden")
+document.getElementById("gameArea").classList.remove("hidden")
+loadStep()
+updateProgress()
+}
+
+function checkStart(){
+let val=document.getElementById("startPassword").value.toLowerCase()
+if(val===startPassword){
+localStorage.setItem("anniversaryStep",step)
+document.getElementById("startScreen").classList.add("hidden")
+document.getElementById("gameArea").classList.remove("hidden")
+loadStep()
+updateProgress()
+}else{
+alert("Try again ❤️")
+}
+}
+
+function loadStep(){
+document.getElementById("passwordInput").value=""
+const clue=document.getElementById("clueText")
+clue.classList.remove("fade")
+setTimeout(()=>{
+clue.innerText=steps[step].clue
+clue.classList.add("fade")
+},100)
+}
+
+function checkPassword(){
+let val=document.getElementById("passwordInput").value.toLowerCase()
+
+if(val===steps[step].password){
+
+const cards=document.querySelectorAll(".card")
+cards.forEach(c=>c.classList.add("correct"))
+
+setTimeout(()=>{
+cards.forEach(c=>c.classList.remove("correct"))
+
+step++
+localStorage.setItem("anniversaryStep",step)
+
+updateProgress()
+
+/* 🔥 SPECIAL PAUSE */
+if(step===11){
+document.getElementById("gameArea").classList.add("hidden")
+document.getElementById("pauseScreen").classList.remove("hidden")
+return
+}
+
+if(step>=steps.length){
+document.getElementById("gameArea").classList.add("hidden")
+document.getElementById("finalScreen").classList.remove("hidden")
+launchConfetti()
+}else{
+loadStep()
+}
+
+},400)
+
+}else{
+alert("Try again ❤️")
+}
+}
+
+/* FINAL UNLOCK */
+function showFinalUnlock(){
+document.getElementById("finalUnlock").classList.remove("hidden")
+}
+
+function checkFinal(){
+let val=document.getElementById("finalInput").value.toLowerCase()
+
+if(val===finalPassword){
+document.getElementById("pauseScreen").classList.add("hidden")
+document.getElementById("finalScreen").classList.remove("hidden")
+launchConfetti()
+}else{
+alert("Not yet… ❤️")
+}
+}
+
+function updateProgress(){
+let percent=Math.floor((step/steps.length)*100)
+document.getElementById("progressBar").style.width=percent+"%"
+document.getElementById("progressText").innerText=percent+"% complete"
+}
+
+function launchConfetti(){
+for(let i=0;i<50;i++){
+let c=document.createElement("div")
+c.className="confetti"
+c.style.left=Math.random()*100+"vw"
+c.style.background=`hsl(${Math.random()*360},100%,50%)`
+document.body.appendChild(c)
+}
+}
+
+function showLetter(){
+document.getElementById("letter").classList.remove("hidden")
+localStorage.removeItem("anniversaryStep")
+}
+
 </script>
 
 </body>
