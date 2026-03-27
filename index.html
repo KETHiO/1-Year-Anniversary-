@@ -339,9 +339,14 @@ intro.style.display="none"
 }
 
 /* LOAD INTRO STATE */
+window.onload = function(){
+
 const introSeen = localStorage.getItem("introSeen")
+
 if(introSeen === "true"){
 document.getElementById("introScreen").style.display = "none"
+}
+
 }
 
 /* PARTICLES */
