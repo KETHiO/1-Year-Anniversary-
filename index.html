@@ -336,11 +336,8 @@ let step=0
 
 /* LOAD SAVE */
 const savedStep=localStorage.getItem("anniversaryStep")
-const introSeen=localStorage.getItem("introSeen")
-
-if(introSeen==="true"){
-document.getElementById("introScreen").style.display="none"
-}
+// ALWAYS SHOW INTRO (for testing)
+document.getElementById("introScreen").style.display="flex"
 
 if(savedStep!==null){
 step=parseInt(savedStep)
