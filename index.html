@@ -3,56 +3,204 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>1 Year ❤️</title>
+<title>1 Year With You ❤️</title>
 
 <style>
 body{
+font-family:-apple-system, Arial;
+background:linear-gradient(135deg,#0f2f1f,#1e4d2b);
 margin:0;
-font-family:Arial;
-background:#0f2f1f;
-color:white;
-text-align:center;
+color:#f5f5f5;
+overflow:hidden;
 }
 
-.hidden{display:none;}
-
-.container{
-padding:20px;
-max-width:400px;
-margin:auto;
-}
-
-.card{
-background:#1a3b2a;
-padding:20px;
-border-radius:12px;
-margin-top:15px;
-}
-
-input,button{
-width:100%;
-padding:15px;
-margin-top:10px;
-border-radius:10px;
-border:none;
-}
-
-button{
-background:#e91e63;
-color:white;
-}
-
-#intro{
+/* INTRO */
+#introScreen{
 position:fixed;
 top:0;
 left:0;
 width:100%;
 height:100%;
-background:black;
+background:
+linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.7)),
+url('intro.jpg');
+background-size:cover;
+background-position:center;
+background-repeat:no-repeat;
 display:flex;
 justify-content:center;
 align-items:center;
+z-index:10;
+text-align:center;
+padding:20px;
+}
+
+.introContent{
+max-width:400px;
+animation:fadeIn 2s ease;
+}
+
+#introText{
+font-size:18px;
+line-height:1.6;
+margin-bottom:30px;
+}
+
+#introScreen button{
+background:#e91e63;
+padding:16px;
+border:none;
+border-radius:12px;
+color:white;
+font-size:16px;
+}
+
+.fadeOut{
+animation:fadeOut 1s forwards;
+}
+@keyframes fadeOut{
+to{opacity:0;}
+}
+
+/* PARTICLES */
+#particles{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+z-index:0;
+pointer-events:none;
+}
+
+.wrapper{
+position:relative;
+z-index:2;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.container{
+width:100%;
+max-width:420px;
+text-align:center;
+}
+
+h1{
+font-size:26px;
+margin-bottom:12px;
+color:#ff6fa5;
+}
+
+.card{
+background:#1a3b2a;
+padding:20px;
+border-radius:18px;
+box-shadow:0 10px 30px rgba(0,0,0,0.5);
+margin-top:15px;
+animation:floatCard 4s ease-in-out infinite;
+}
+
+@keyframes floatCard{
+0%{transform:translateY(0px);}
+50%{transform:translateY(-4px);}
+100%{transform:translateY(0px);}
+}
+
+.inputGroup{
+display:flex;
 flex-direction:column;
+align-items:center;
+}
+
+input{
+padding:16px;
+font-size:16px;
+border-radius:12px;
+border:none;
+width:100%;
+max-width:300px;
+text-align:center;
+}
+
+button{
+background:#e91e63;
+color:white;
+border:none;
+padding:16px;
+font-size:16px;
+border-radius:12px;
+cursor:pointer;
+margin-top:12px;
+width:100%;
+max-width:300px;
+}
+button:active{
+transform:scale(0.95);
+}
+
+.progress{
+width:100%;
+background:#1a3b2a;
+border-radius:20px;
+overflow:hidden;
+margin-bottom:10px;
+}
+.bar{
+height:16px;
+width:0%;
+background:linear-gradient(90deg,#ff6fa5,#ff4081);
+}
+
+.particle{
+position:fixed;
+width:6px;
+height:6px;
+background:#ff6fa5;
+border-radius:50%;
+opacity:0.7;
+animation:floatUp linear infinite;
+z-index:1;
+}
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:0;}
+20%{opacity:0.7;}
+100%{transform:translateY(-10vh);opacity:0;}
+}
+
+.confetti{
+position:fixed;
+width:8px;
+height:8px;
+top:0;
+animation:fall 3s linear forwards;
+z-index:5;
+}
+@keyframes fall{
+to{transform:translateY(100vh);}
+}
+
+.fade{
+animation:fadeIn 0.5s ease;
+}
+@keyframes fadeIn{
+from{opacity:0; transform:translateY(10px);}
+to{opacity:1; transform:translateY(0);}
+}
+
+.correct{
+box-shadow:0 0 20px #ff6fa5;
+transition:0.3s;
+}
+
+.hidden{display:none;}
+
+#letter{
+white-space:pre-line;
+margin-top:15px;
 }
 </style>
 </head>
@@ -60,54 +208,114 @@ flex-direction:column;
 <body>
 
 <!-- INTRO -->
-<div id="intro">
-<h2>Before tonight ends… ❤️</h2>
-<button onclick="start()">Start</button>
+<div id="introScreen">
+  <div class="introContent">
+    <h2 id="introText">
+      Before tonight ends…<br><br>
+      I want you to relive us.<br><br>
+      Every moment, every memory,<br>
+      every step…<br><br>
+      it all led to this ❤️
+    </h2>
+    <button onclick="startApp()">Start our story ❤️</button>
+  </div>
 </div>
 
+<div id="particles"></div>
+
+<div class="wrapper">
 <div class="container">
 
+<h1>1 Year With You ❤️</h1>
+
+<div class="progress">
+<div class="bar" id="progressBar"></div>
+</div>
+
+<p id="progressText">0% complete</p>
+
 <div id="startScreen" class="card">
-<h3>Enter Password</h3>
-<input id="startPass">
+<h2>Enter Password</h2>
+<div class="inputGroup">
+<input id="startPassword">
 <button onclick="checkStart()">Start</button>
 </div>
-
-<div id="game" class="hidden">
-<div class="card">
-<h3 id="clue"></h3>
 </div>
+
+<div id="gameArea" class="hidden">
 
 <div class="card">
-<input id="pass">
-<button onclick="check()">Next</button>
+<h2 id="clueText"></h2>
+</div>
+
+<div class="card">
+<p>Enter the password from the envelope:</p>
+<div class="inputGroup">
+<input id="passwordInput">
+<button onclick="checkPassword()">Next</button>
 </div>
 </div>
 
-<div id="pause" class="hidden card">
-<h3>You’ve made it ❤️</h3>
-<button onclick="unlock()">Continue</button>
+</div>
+
+<!-- 🔥 NEW PAUSE SCREEN -->
+<div id="pauseScreen" class="hidden card">
+<h2>You’ve made it this far ❤️</h2>
+<p>But this isn’t the end…</p>
+
+<button onclick="showFinalUnlock()">Continue ❤️</button>
 
 <div id="finalUnlock" class="hidden">
-<input id="finalPass">
-<button onclick="final()">Unlock</button>
+<p>Ask me for the final password ❤️</p>
+<input id="finalInput">
+<button onclick="checkFinal()">Unlock</button>
 </div>
 </div>
 
-<div id="cinematic" class="hidden">
-<h2 id="text"></h2>
-<div id="location" class="hidden">
-<h3>Follow the lights ✨</h3>
-<button onclick="maps()">Navigate</button>
-</div>
+<div id="finalScreen" class="hidden card">
+<h2>You made it ❤️</h2>
+<p>Follow the lights… your final surprise is waiting 🌙</p>
+
+<button onclick="showLetter()">Open your letter ❤️</button>
+
+<div id="letter" class="hidden">
+My love,
+
+One year with you has been the most beautiful journey of my life.
+
+Every laugh, every hug, every moment has meant everything to me.
+
+Tonight is just another reminder of how much I love you ❤️
 </div>
 
+</div>
+
+</div>
 </div>
 
 <script>
 
+/* INTRO */
+function startApp(){
+localStorage.setItem("introSeen","true")
+const intro=document.getElementById("introScreen")
+intro.classList.add("fadeOut")
+setTimeout(()=>{intro.style.display="none"},1000)
+}
+
+/* PARTICLES */
+const particleContainer=document.getElementById("particles")
+for(let i=0;i<40;i++){
+let p=document.createElement("div")
+p.className="particle"
+p.style.left=Math.random()*100+"vw"
+p.style.animationDuration=(6+Math.random()*8)+"s"
+particleContainer.appendChild(p)
+}
+
+/* GAME */
 const startPassword="crazy sams"
-const finalPassword="tonight"
+const finalPassword="tonight" // 🔥 CHANGE THIS WHEN READY
 
 const steps=[
 {clue:"Think back to a moment where everything felt simple… where the water touched us and time slowed down. Go to the place where we first shared that feeling", password:"april4th"},
@@ -120,80 +328,125 @@ const steps=[
 {clue:"Not something we found..but something we made. Go to where our hard work still stands", password:"tomatoes"},
 {clue:"Before the world woke up, we were already there.. watching something new begin together", password:"us"},
 {clue:"Not the best weather, but definitely one of the best moments.. Where cards were played and laughter won", password:"uno"},
-{clue:"Not everything can be solved with thinking.. some things are felt instead. You already know what unlocks this one", password:"08111998"}
+{clue:"Not everything can be solved with thinking.. some things are felt instead. You already know what unlocks this one", password:"08111998"},
+{clue:"You’re almost there… one last step before everything comes together ❤️", password:"1 year anniversary"}
 ]
 
 let step=0
 
-function start(){
-document.getElementById("intro").style.display="none"
+/* LOAD SAVE */
+const savedStep=localStorage.getItem("anniversaryStep")
+const introSeen=localStorage.getItem("introSeen")
+
+if(introSeen==="true"){
+document.getElementById("introScreen").style.display="none"
+}
+
+if(savedStep!==null){
+step=parseInt(savedStep)
+document.getElementById("startScreen").classList.add("hidden")
+document.getElementById("gameArea").classList.remove("hidden")
+loadStep()
+updateProgress()
 }
 
 function checkStart(){
-if(startPass.value.toLowerCase()===startPassword){
-startScreen.classList.add("hidden")
-game.classList.remove("hidden")
-load()
+let val=document.getElementById("startPassword").value.toLowerCase()
+if(val===startPassword){
+localStorage.setItem("anniversaryStep",step)
+document.getElementById("startScreen").classList.add("hidden")
+document.getElementById("gameArea").classList.remove("hidden")
+loadStep()
+updateProgress()
 }else{
 alert("Try again ❤️")
 }
 }
 
-function load(){
+function loadStep(){
+document.getElementById("passwordInput").value=""
+const clue=document.getElementById("clueText")
+clue.classList.remove("fade")
+setTimeout(()=>{
 clue.innerText=steps[step].clue
+clue.classList.add("fade")
+},100)
 }
 
-function check(){
-if(pass.value.toLowerCase()===steps[step].password){
+function checkPassword(){
+let val=document.getElementById("passwordInput").value.toLowerCase()
+
+if(val===steps[step].password){
+
+const cards=document.querySelectorAll(".card")
+cards.forEach(c=>c.classList.add("correct"))
+
+setTimeout(()=>{
+cards.forEach(c=>c.classList.remove("correct"))
 
 step++
+localStorage.setItem("anniversaryStep",step)
 
-if(step===steps.length){
-game.classList.add("hidden")
-pause.classList.remove("hidden")
+updateProgress()
+
+/* 🔥 SPECIAL PAUSE */
+if(step===11){
+document.getElementById("gameArea").classList.add("hidden")
+document.getElementById("pauseScreen").classList.remove("hidden")
 return
 }
 
-load()
+if(step>=steps.length){
+document.getElementById("gameArea").classList.add("hidden")
+document.getElementById("finalScreen").classList.remove("hidden")
+launchConfetti()
+}else{
+loadStep()
+}
+
+},400)
 
 }else{
 alert("Try again ❤️")
 }
 }
 
-function unlock(){
-finalUnlock.classList.remove("hidden")
+/* FINAL UNLOCK */
+function showFinalUnlock(){
+document.getElementById("finalUnlock").classList.remove("hidden")
 }
 
-function final(){
-if(finalPass.value.toLowerCase()===finalPassword){
-pause.classList.add("hidden")
-cinematic.classList.remove("hidden")
-run()
+function checkFinal(){
+let val=document.getElementById("finalInput").value.toLowerCase()
+
+if(val===finalPassword){
+document.getElementById("pauseScreen").classList.add("hidden")
+document.getElementById("finalScreen").classList.remove("hidden")
+launchConfetti()
 }else{
-alert("Not yet ❤️")
+alert("Not yet… ❤️")
 }
 }
 
-function run(){
-const lines=["One last thing…","Everything led to this moment…","Come find me ❤️"]
-let i=0
+function updateProgress(){
+let percent=Math.floor((step/steps.length)*100)
+document.getElementById("progressBar").style.width=percent+"%"
+document.getElementById("progressText").innerText=percent+"% complete"
+}
 
-function next(){
-if(i<lines.length){
-text.innerText=lines[i]
-i++
-setTimeout(next,2000)
-}else{
-location.classList.remove("hidden")
+function launchConfetti(){
+for(let i=0;i<50;i++){
+let c=document.createElement("div")
+c.className="confetti"
+c.style.left=Math.random()*100+"vw"
+c.style.background=`hsl(${Math.random()*360},100%,50%)`
+document.body.appendChild(c)
 }
 }
 
-next()
-}
-
-function maps(){
-window.open("https://www.google.com/maps/search/?api=1&query=Safety%20Beach%20NSW")
+function showLetter(){
+document.getElementById("letter").classList.remove("hidden")
+localStorage.removeItem("anniversaryStep")
 }
 
 </script>
