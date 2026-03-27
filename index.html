@@ -230,6 +230,7 @@ display:none;
 
 <body>
 
+<!-- INTRO -->
 <div id="introScreen">
   <div class="introContent">
     <h2 id="introText">
@@ -295,6 +296,7 @@ display:none;
 <div id="cinematicScreen" class="hidden">
 <div id="cinematicContent">
 <h2 id="cinematicText"></h2>
+
 <div id="finalLocation">
 <h3>Follow the lights ✨</h3>
 <p id="locationName">Safety Beach NSW ❤️</p>
@@ -323,10 +325,23 @@ Tonight is just another reminder of how much I love you ❤️
 
 <script>
 
+/* INTRO FIXED */
 function startApp(){
 localStorage.setItem("introSeen","true")
-document.getElementById("introScreen").classList.add("fadeOut")
-setTimeout(()=>{introScreen.style.display="none"},1000)
+
+const intro = document.getElementById("introScreen")
+
+intro.classList.add("fadeOut")
+
+setTimeout(()=>{
+intro.style.display="none"
+},1000)
+}
+
+/* LOAD INTRO STATE */
+const introSeen = localStorage.getItem("introSeen")
+if(introSeen === "true"){
+document.getElementById("introScreen").style.display = "none"
 }
 
 /* PARTICLES */
@@ -397,6 +412,7 @@ alert("Try again ❤️")
 }
 }
 
+/* FINAL FLOW */
 function showFinalUnlock(){
 document.getElementById("finalUnlock").classList.remove("hidden")
 }
@@ -413,6 +429,7 @@ alert("Not yet… ❤️")
 }
 }
 
+/* CINEMATIC */
 function runCinematic(){
 const text=document.getElementById("cinematicText")
 const lines=["One last thing…","Everything led to this moment…","Come find me ❤️"]
@@ -451,6 +468,7 @@ document.getElementById("letter").classList.remove("hidden")
 }
 
 function resetApp(){
+localStorage.clear()
 location.reload()
 }
 
