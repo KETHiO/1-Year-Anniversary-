@@ -6,8 +6,6 @@
 <title>1 Year With You ❤️</title>
 
 <style>
-
-/* (ALL YOUR CSS — UNCHANGED) */
 body{
 font-family:-apple-system, Arial;
 background:linear-gradient(135deg,#0f2f1f,#1e4d2b);
@@ -16,7 +14,7 @@ color:#f5f5f5;
 overflow:hidden;
 }
 
-/* INTRO SCREEN WITH BACKGROUND IMAGE */
+/* INTRO */
 #introScreen{
 position:fixed;
 top:0;
@@ -64,6 +62,7 @@ animation:fadeOut 1s forwards;
 to{opacity:0;}
 }
 
+/* PARTICLES */
 #particles{
 position:fixed;
 top:0;
@@ -203,7 +202,6 @@ transition:0.3s;
 white-space:pre-line;
 margin-top:15px;
 }
-
 </style>
 </head>
 
@@ -260,6 +258,20 @@ margin-top:15px;
 
 </div>
 
+<!-- 🔥 NEW PAUSE SCREEN -->
+<div id="pauseScreen" class="hidden card">
+<h2>You’ve made it this far ❤️</h2>
+<p>But this isn’t the end…</p>
+
+<button onclick="showFinalUnlock()">Continue ❤️</button>
+
+<div id="finalUnlock" class="hidden">
+<p>Ask me for the final password ❤️</p>
+<input id="finalInput">
+<button onclick="checkFinal()">Unlock</button>
+</div>
+</div>
+
 <div id="finalScreen" class="hidden card">
 <h2>You made it ❤️</h2>
 <p>Follow the lights… your final surprise is waiting 🌙</p>
@@ -288,7 +300,7 @@ function startApp(){
 localStorage.setItem("introSeen","true")
 const intro=document.getElementById("introScreen")
 intro.classList.add("fadeOut")
-setTimeout(()=>{ intro.style.display="none" },1000)
+setTimeout(()=>{intro.style.display="none"},1000)
 }
 
 /* PARTICLES */
@@ -303,8 +315,9 @@ particleContainer.appendChild(p)
 
 /* GAME */
 const startPassword="crazy sams"
+const finalPassword="tonight" // 🔥 CHANGE THIS WHEN READY
 
-const steps = [ /* (UNCHANGED — your exact steps stay here) */ 
+const steps=[
 {clue:"Think back to a moment where everything felt simple… where the water touched us and time slowed down. Go to the place where we first shared that feeling", password:"april4th"},
 {clue:"Not our first hello, but definitely not our last moment together either. Find the place where we stopped talking and did something better", password:"march29th"},
 {clue:"The weather wasn't kind, but we didn't care. Find where that day became ours", password:"watch this"},
@@ -319,22 +332,20 @@ const steps = [ /* (UNCHANGED — your exact steps stay here) */
 {clue:"You’re almost there… one last step before everything comes together ❤️", password:"1 year anniversary"}
 ]
 
-let step = 0
+let step=0
 
-/* 🔥 LOAD SAVED PROGRESS */
-const savedStep = localStorage.getItem("anniversaryStep")
-const introSeen = localStorage.getItem("introSeen")
+/* LOAD SAVE */
+const savedStep=localStorage.getItem("anniversaryStep")
+const introSeen=localStorage.getItem("introSeen")
 
-if(introSeen === "true"){
+if(introSeen==="true"){
 document.getElementById("introScreen").style.display="none"
 }
 
-if(savedStep !== null){
-step = parseInt(savedStep)
-
+if(savedStep!==null){
+step=parseInt(savedStep)
 document.getElementById("startScreen").classList.add("hidden")
 document.getElementById("gameArea").classList.remove("hidden")
-
 loadStep()
 updateProgress()
 }
@@ -342,15 +353,11 @@ updateProgress()
 function checkStart(){
 let val=document.getElementById("startPassword").value.toLowerCase()
 if(val===startPassword){
-
-localStorage.setItem("anniversaryStep", step)
-
+localStorage.setItem("anniversaryStep",step)
 document.getElementById("startScreen").classList.add("hidden")
 document.getElementById("gameArea").classList.remove("hidden")
-
 loadStep()
 updateProgress()
-
 }else{
 alert("Try again ❤️")
 }
@@ -360,7 +367,6 @@ function loadStep(){
 document.getElementById("passwordInput").value=""
 const clue=document.getElementById("clueText")
 clue.classList.remove("fade")
-
 setTimeout(()=>{
 clue.innerText=steps[step].clue
 clue.classList.add("fade")
@@ -379,9 +385,16 @@ setTimeout(()=>{
 cards.forEach(c=>c.classList.remove("correct"))
 
 step++
-localStorage.setItem("anniversaryStep", step)
+localStorage.setItem("anniversaryStep",step)
 
 updateProgress()
+
+/* 🔥 SPECIAL PAUSE */
+if(step===11){
+document.getElementById("gameArea").classList.add("hidden")
+document.getElementById("pauseScreen").classList.remove("hidden")
+return
+}
 
 if(step>=steps.length){
 document.getElementById("gameArea").classList.add("hidden")
@@ -395,6 +408,23 @@ loadStep()
 
 }else{
 alert("Try again ❤️")
+}
+}
+
+/* FINAL UNLOCK */
+function showFinalUnlock(){
+document.getElementById("finalUnlock").classList.remove("hidden")
+}
+
+function checkFinal(){
+let val=document.getElementById("finalInput").value.toLowerCase()
+
+if(val===finalPassword){
+document.getElementById("pauseScreen").classList.add("hidden")
+document.getElementById("finalScreen").classList.remove("hidden")
+launchConfetti()
+}else{
+alert("Not yet… ❤️")
 }
 }
 
